@@ -9,23 +9,20 @@ class Character(object):
 	"""
 	# Method used to intialise the character object
 	# Will pass the primary and secondary image names of the character (used for walking)
-	def __init__(self, primary_image_name, secondary_image_name):
+	def __init__(self, image_name):
 		super(Character, self).__init__()
-		self.primary_image   = primary_image_name
-		self.secondary_image = secondary_image_name
+		
 
-	def move_left(distance):
-		pass
+		self.image_name 	 = image_name
 
-	def move_right(distance):
-		pass
+		self.game_image      = pygame.image.load(self.image_name)
+		self.rect 			 = self.game_image.get_rect()
+		self.equipped_item   = None
 
-	def jump():
+	def equip_item(self, item):
+		self.deposit_item()
+		self.equipped_item = item
+
 		pass
-	def move_using_keyboard_input(key_pressed, distance):
-		if key_pressed == K_RIGHT:
-			move_right(distance)
-		elif key_pressed == K_LEFT:
-			move_left(distance)
-		elif key_pressed == K_SPACE:
-			jump()
+	def deposit_item(self):
+		self.equipped_item = None
