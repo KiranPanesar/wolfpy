@@ -1,0 +1,19 @@
+#!/usr/bin/python
+#
+# Tom's Pong
+# A simple pong game with realistic physics and AI
+# http://www.tomchance.uklinux.net/projects/pong.shtml
+#
+# Released under the GNU General Public License
+
+import pygame
+
++pygame.init()
++
++width = 320
++height  = 480
++size = width, height
+
+character = pygame.Rect(10, 10, 20, 30)
+character_image = pygame.image.load("goat.png")
+screen.blit(character_image, character) 
