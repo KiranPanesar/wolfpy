@@ -9,12 +9,7 @@ class GameEngine(object):
 	"""docstring for GameEngine"""
 	def __init__(self):
 		super(GameEngine, self).__init__()
-		width = 900
-		height  = 480
-		size = width, height
-
-		self.screen = pygame.display.set_mode(size)
-
+		self.screen = pygame.display.set_mode((900, 480))
 
 	def draw_background(self):
 		blue = 52, 152, 219
@@ -59,32 +54,41 @@ class GameEngine(object):
 		pass
 
 	def start_title_sequence(self):
-		self.screen.fill((255, 255, 255))
+		self.screen.fill((255,255,255))
+		play_button = pygame.Rect(300,50,250,180)
+		# play_button.fill((0,210,255))
+		self.screen.blit(play_button)
+
+		pygame.display.flip()
+
 		while 1:
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONUP:
-					self.start_game()
-	def start_game(self):
-	    self.draw_background()
-	    self.draw_characters()
+					pos = pygame.mouse.get_pos()
+					if play_button.collidepoint(pos):
+						self.start_game()
 
-	    while 1:
-	            for event in pygame.event.get():
-	                    if event.type == pygame.QUIT:
-	                            sys.exit()
-	                    if event.type == pygame.KEYDOWN:
-	                    	    self.draw_background()                  
-	                            if event.key == pygame.K_UP:
+	def start_game(self):
+		self.draw_background()
+		self.draw_characters()
+
+		while 1:
+				for event in pygame.event.get():
+						if event.type == pygame.QUIT:
+								sys.exit()
+						if event.type == pygame.KEYDOWN:
+								self.draw_background()                  
+								if event.key == pygame.K_UP:
 									self.goatrect = self.player.rect.move([0,-10])
-	                            elif event.key == pygame.K_RIGHT:
+								elif event.key == pygame.K_RIGHT:
 									self.player.rect = self.player.rect.move([50, 0])
-	                            elif event.key == pygame.K_LEFT:
-	                                self.player.rect = self.player.rect.move([-50,0])
-	                    elif event.type == pygame.MOUSEBUTTONUP:
-	                    		print pygame.mouse.get_pos()
-	                    		if self.player.equipped_item:
-	                    			self.deposit_item()
-	                    		else:
-	                    			self.player.equip_item(self.cabbage)
-	            self.refresh_characters()
-	            pygame.display.flip()
+								elif event.key == pygame.K_LEFT:
+									self.player.rect = self.player.rect.move([-50,0])
+						elif event.type == pygame.MOUSEBUTTONUP:
+								print pygame.mouse.get_pos()
+								if self.player.equipped_item:
+									self.deposit_item()
+								else:
+									self.player.equip_item(self.cabbage)
+				self.refresh_characters()
+				pygame.display.flip()
