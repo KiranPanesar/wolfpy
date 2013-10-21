@@ -57,6 +57,13 @@ class GameEngine(object):
 			self.refresh_characters()
 			pass
 		pass
+
+	def start_title_sequence(self):
+		self.screen.fill((255, 255, 255))
+		while 1:
+			for event in pygame.event.get():
+				if event.type == pygame.MOUSEBUTTONUP:
+					self.start_game()
 	def start_game(self):
 	    self.draw_background()
 	    self.draw_characters()
