@@ -16,7 +16,7 @@ class GameEngine(object):
 		self.screen = pygame.display.set_mode(size)
 		
 		self.left_shore_characters = []
-		self.right_shore_character = []
+		self.right_shore_characters = []
 
 
 	def draw_background(self):
@@ -46,6 +46,9 @@ class GameEngine(object):
 		self.sheep.rect.top   = 320
 		self.wolf.rect.left   = 150
 
+		self.left_shore_characters.append(self.cabbage)
+		self.left_shore_characters.append(self.wolf)
+		self.left_shore_characters.append(self.sheep)
 
 		self.refresh_characters()
 		pass
@@ -62,17 +65,65 @@ class GameEngine(object):
 		pass
 	def deposit_item(self):
 		if self.player.equipped_item:
-
 			self.player.equipped_item.rect.top  = self.player.rect.top
 			self.player.equipped_item.rect.left = self.player.rect.right
 			
 			self.screen.blit(self.player.equipped_item.game_image, self.player.equipped_item.rect)
+			
+			# Remove the equipped item from both the sides
+			if self.player.equipped_item in self.left_shore_characters:
+				self.left_shore_characters.remove(self.player.equipped_item)
+				pass
+			elif self.player.equipped_item in self.right_shore_characters:
+				self.right_shore_characters.remove(self.player.equipped_item)
+				pass
+
+			# Check which shore the item is on and add it
+			current_side = []
+			if self.player.equipped_item.rect.left >= 621:
+				current_side = self.right_shore_characters
+			elif self.player.equipped_item.rect.right <= 379:
+				current_side = self.left_shore_characters
+
+			current_side.append(self.player.equipped_item)
+
 			self.player.deposit_item()
 
 			self.refresh_characters()
 			pass
 		pass
 
+	def check_characters(self):
+		current_side = []
+
+		if 379 < self.player.rect.left < 450:
+			current_side = self.left_shore_characters
+			print "leaving left"
+		elif self.player.rect.right < 621 and self.player.rect.left >= 450:
+			current_side = self.right_shore_characters
+			print "leaving right"
+
+		# Check if the sheep has been left with the cabbage, or the wolf with the sheep
+		if self.cabbage in current_side and self.sheep in current_side:
+			print "cabbage eaten by sheep"
+			pass
+		elif self.sheep in current_side and self.wolf in current_side:
+			print "sheep eaten by wolf"
+			pass
+		else:
+			print "all good"
+			pass
+		pass
+		
+	def get_item_clicked(self, position):
+		if self.cabbage.rect.collidepoint(position):
+			return self.cabbage
+		elif self.wolf.rect.collidepoint(position):
+			return self.wolf
+		elif self.sheep.rect.collidepoint(position):
+			return self.sheep
+			pass
+		pass
 	def start_title_sequence(self):
 		self.screen.fill((255, 255, 255))
 		while 1:
@@ -93,13 +144,20 @@ class GameEngine(object):
 									self.goatrect = self.player.rect.move([0,-10])
 	                            elif event.key == pygame.K_RIGHT:
 									self.player.rect = self.player.rect.move([50, 0])
+									self.check_characters()
 	                            elif event.key == pygame.K_LEFT:
 	                                self.player.rect = self.player.rect.move([-50,0])
+	                                self.check_characters()
 	                    elif event.type == pygame.MOUSEBUTTONUP:
 	                    		print pygame.mouse.get_pos()
 	                    		if self.player.equipped_item:
 	                    			self.deposit_item()
 	                    		else:
-	                    			self.player.equip_item(self.cabbage)
+	                    			self.player.equip_item(self.get_item_clicked(pygame.mouse.get_pos()))
+
+	                    			if self.player.equipped_item in self.left_shore_characters:
+		                    			self.left_shore_characters.remove(self.player.equipped_item)
+	                    			if self.player.equipped_item in self.right_shore_characters:
+		                    			self.right_shore_characters.remove(self.player.equipped_item)
 	            self.refresh_characters()
 	            pygame.display.flip()
