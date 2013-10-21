@@ -14,6 +14,9 @@ class GameEngine(object):
 		size = width, height
 
 		self.screen = pygame.display.set_mode(size)
+		
+		self.left_shore_characters = []
+		self.right_shore_character = []
 
 
 	def draw_background(self):
@@ -28,11 +31,20 @@ class GameEngine(object):
 
 		pass
 	def draw_characters(self):
-		self.player 		  = character.Character("./img/goat.bmp")
+		self.player 		  = character.Character("./img/farmer.bmp")
 		self.player.rect.top  = 320
 
 		self.cabbage 		  = character.Character("./img/cabbage.bmp")
 		self.cabbage.rect.top = 320
+		self.cabbage.rect.left= 50
+
+		self.wolf			  = character.Character("./img/wolf.bmp")
+		self.wolf.rect.top    = 320
+		self.wolf.rect.left   = 100
+
+		self.sheep		      = character.Character("./img/goat.bmp")
+		self.sheep.rect.top   = 320
+		self.wolf.rect.left   = 150
 
 
 		self.refresh_characters()
@@ -44,6 +56,9 @@ class GameEngine(object):
 
 		self.screen.blit(self.player.game_image, self.player.rect)
 		self.screen.blit(self.cabbage.game_image, self.cabbage.rect)
+		self.screen.blit(self.wolf.game_image, self.wolf.rect)
+		self.screen.blit(self.sheep.game_image, self.sheep.rect)
+
 		pass
 	def deposit_item(self):
 		if self.player.equipped_item:
