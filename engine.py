@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
+# Created by Kiran Panesar and Dan Khoeler - 22/10/2013
 
 from Tkinter import *
 import sys, pygame
@@ -159,9 +160,7 @@ class GameEngine(object):
 							sys.exit()
 						elif event.type == pygame.KEYDOWN:
 							self.draw_background()                  
-							if event.key == pygame.K_UP:
-								self.goatrect = self.player.rect.move([0,-10])
-							elif event.key == pygame.K_RIGHT:
+							if event.key == pygame.K_RIGHT:
 								self.player.rect = self.player.rect.move([50, 0])
 								self.check_characters()
 							elif event.key == pygame.K_LEFT:
