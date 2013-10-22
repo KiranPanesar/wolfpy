@@ -146,6 +146,8 @@ class GameEngine(object):
 							elif event.key == pygame.K_LEFT:
 								self.player.rect = self.player.rect.move([-50,0])
 								self.check_characters()
+							elif event.key == pygame.K_ESCAPE:
+								self.start_title_sequence();
 						elif event.type == pygame.MOUSEBUTTONUP:
 							print pygame.mouse.get_pos()
 							if self.player.equipped_item:
