@@ -161,11 +161,16 @@ class GameEngine(object):
 						elif event.type == pygame.KEYDOWN:
 							self.draw_background()                  
 							if event.key == pygame.K_RIGHT:
-								self.player.rect = self.player.rect.move([50, 0])
-								self.check_characters()
+								if self.player.rect.right <= 850:
+									self.player.rect = self.player.rect.move([50, 0])
+									self.check_characters()
+								elif self.player.rect.right != 900:
+									self.player.rect = self.player.rect.move([900 - self.player.rect.right, 0])
+									self.check_characters()
 							elif event.key == pygame.K_LEFT:
-								self.player.rect = self.player.rect.move([-50,0])
-								self.check_characters()
+								if self.player.rect.left >= 50:
+									self.player.rect = self.player.rect.move([-50,0])
+									self.check_characters()
 							elif event.key == pygame.K_ESCAPE:
 								self.start_title_sequence();
 						elif event.type == pygame.MOUSEBUTTONUP:
