@@ -4,14 +4,26 @@ class Create(pygame.Surface):
 	def __init__(self, surface, background, x,y, text, width, height, colour, fontSize, border, borderColour):
 
 		pygame.font.init()
-
-		self.render = pygame.Surface((width,height))
-		self.render.fill(background)
+		# Create container border surface
+		self.renderSurface = surface
+		self.border = pygame.Surface((width,height))
+		self.border.fill((borderColour))
+		self.borderRect = self.border.get_rect()
+		if x != None:
+			self.borderRect.left = x
+		else:
+			self.borderRect.centerx = self.renderSurface.get_rect().centerx
+		self.borderRect.top = y
+		# Create container border surface
+		self.render = pygame.Surface((width -(border * 2),height -(border * 2)))
+		self.render.fill((background))
 
 		self.rect =  self.render.get_rect()
-		self.rect.centerx = x
-		self.rect.top = y
-
+		self.rect.top = border
+		self.rect.left = border
+		# Let's blits these two!
+		self.border.blit(self.render, self.rect)
+		self.rect = self.borderRect
 		font = pygame.font.Font(None, fontSize)
 		
 		text = font.render(text, 1, (colour))
@@ -19,9 +31,6 @@ class Create(pygame.Surface):
 		textpos.centerx = width / 2
 		textpos.centery = height / 2
 
-		self.render.blit(text, textpos)
-		surface.blit(startBtn.render, startBtn.rect)
-	def setActive(self):
-		pass
-	def serInactive(self):
-		pass
+		self.border.blit(text, textpos)
+
+		self.renderSurface.blit(self.border, self.borderRect)

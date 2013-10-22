@@ -136,7 +136,7 @@ class GameEngine(object):
 
 				self.screen.fill((255, 255, 255))
 
-				startBtn = lib.button.Create((0,210,255),self.screen, self.screen.get_rect().centerx, 200, "Start Game", 300, 50, (255,255,255), 32, None);
+				startBtn = lib.button.Create(self.screen,(0,210,255), None, 200, "Start Game", 300, 50, (255,255,255), 32, 2,(10,10,10));
 				
 				pygame.display.flip()
 
