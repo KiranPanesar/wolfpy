@@ -1,19 +1,26 @@
-class Button:
-	def __init__(self, fill, callback, text, width, height, border):
+import pygame
 
-				startBtn = pygame.Surface((300,50))
-				startBtn.fill((0,210,255))
-				startBtnPos =  startBtn.get_rect()
-				startBtnPos.centerx = self.screen.get_rect().centerx
-				startBtnPos.top = 100
+class Create(pygame.Surface):
+	def __init__(self, background, x,y, text, width, height, colour, fontSize, border):
+		
+		pygame.font.init()
 
-				font = pygame.font.Font(None, 36)
-				
-				text = font.render("Start Game", 1, (10,10, 10))
-				textpos = text.get_rect()
-				textpos.centerx = 150
-				textpos.centery = 25
-				startBtn.blit(text, textpos)
-				
-	def checkColision:
-		pass
+		self.render = pygame.Surface((width,height))
+		self.render.fill(background)
+
+		self.rect =  self.render.get_rect()
+		self.rect.centerx = x
+		self.rect.top = y
+
+		font = pygame.font.Font(None, fontSize)
+		
+		text = font.render(text, 1, (colour))
+		textpos = text.get_rect()
+		textpos.centerx = width / 2
+		textpos.centery = height / 2
+
+		print textpos.centery
+		print textpos.centerx
+
+		self.render.blit(text, textpos)
+	setActive
