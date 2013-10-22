@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import sys, pygame, character
+import sys, pygame
+import character
+import lib.gifsprite
+import lib.textbox
+
 
 class GameEngine(object):
 		"""docstring for GameEngine"""
 		def __init__(self):
 				super(GameEngine, self).__init__()
 				self.screen = pygame.display.set_mode((900,480))
-				
 				self.left_shore_characters = []
 				self.right_shore_characters = []
 
