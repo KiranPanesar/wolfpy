@@ -29,6 +29,7 @@ class GameEngine(object):
 				pygame.draw.rect(self.screen, green, (0, 379, 300, 100), 0)
 				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
 				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
+				pygame.draw.rect(self.screen, (107,62,46), (380, 379, 100, 20), 0) # right shore
 
 		def draw_characters(self):
 				self.player = character.Character("./img/farmer.bmp")
