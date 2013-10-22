@@ -72,7 +72,6 @@ class GameEngine(object):
 		def deposit_item(self):
 				if self.player.equipped_item:
 						self.player.equipped_item.rect.bottom  = self.player.rect.bottom
-						print self.player.equipped_item.rect.left
 						if self.player.equipped_item.rect.centerx > 450:
 							self.player.equipped_item.rect.right = self.player.equipped_item.positionRight
 							pass
@@ -106,24 +105,29 @@ class GameEngine(object):
 		def check_characters(self):
 				current_side = []
 
-				if 379 < self.player.rect.left < 450:
-					current_side = self.left_shore_characters
-					print "leaving left"
-				elif self.player.rect.right < 621 and self.player.rect.left >= 450:
-					current_side = self.right_shore_characters
-					print "leaving right"
+				if self.player.rect.right > 380 and self.player.rect.left < 620:
+					# if self.player.rect.right > 380:
+					# 	current_side = self.left_shore_characters
+					# 	print "leaving left"
+					# elif self.player.rect.left < 620:
+					# 	current_side = self.right_shore_characters
+					# 	print "leaving right"
 
 				# Check if the sheep has been left with the cabbage, or the wolf with the sheep
-				if self.cabbage in current_side and self.sheep in current_side:
-					print "cabbage eaten by sheep"
-					pass
-				elif self.sheep in current_side and self.wolf in current_side:
-					print "sheep eaten by wolf"
-					pass
-				else:
-					print "all good"
-					pass
-				pass
+					if len(self.right_shore_characters) > 1:
+						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters:
+							print "cabbage eaten by sheep"
+						elif self.sheep in self.right_shore_characters and self.wolf in self.right_shore_characters:
+							print "sheep eaten by wolf"
+					else:
+						if self.sheep in self.left_shore_characters and self.wolf in self.left_shore_characters:
+							print "sheep eaten by wolf"
+						elif self.cabbage in self.left_shore_characters and self.sheep in self.left_shore_characters:
+							print "cabbage eaten by sheep"
+					
+
+						
+			
 				
 		def get_item_clicked(self, position):
 				current_side = []
@@ -184,7 +188,6 @@ class GameEngine(object):
 							elif event.key == pygame.K_ESCAPE:
 								self.start_title_sequence();
 						elif event.type == pygame.MOUSEBUTTONUP:
-							print pygame.mouse.get_pos()
 							self.draw_background()
 							if self.player.equipped_item:     
 								self.deposit_item()
