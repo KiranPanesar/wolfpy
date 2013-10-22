@@ -1,7 +1,7 @@
 import pygame
 
 class Create(pygame.Surface):
-	def __init__(self, surface, background, x,y, text, width, height, colour, fontSize, border, borderColour):
+	def __init__(self, surface, background, x,y, text, width, height, colour, fontSize, border, borderColour, render):
 
 		pygame.font.init()
 		# Create container border surface
@@ -32,5 +32,7 @@ class Create(pygame.Surface):
 		textpos.centery = height / 2
 
 		self.border.blit(text, textpos)
-
-		self.renderSurface.blit(self.border, self.borderRect)
+		self.render = self.border
+		if render:
+			self.renderSurface.blit(self.border, self.borderRect)
+	

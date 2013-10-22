@@ -16,6 +16,7 @@ class GameEngine(object):
 				self.screen = pygame.display.set_mode((900,480))
 				self.left_shore_characters = []
 				self.right_shore_characters = []
+				self.sound = True
 
 
 		def draw_background(self):
@@ -133,10 +134,11 @@ class GameEngine(object):
 				elif self.sheep.rect.collidepoint(position) and self.sheep in current_side:
 					return self.sheep
 
-		def start_title_sequence(self):
+		def title_screen(self):
 
 				self.screen.fill((255, 255, 255))
-				startBtn = lib.button.Create(self.screen,(0,210,255), None, 200, "Start Game", 300, 50, (255,255,255), 32, 2,(10,10,10));
+				startBtn = lib.button.Create(self.screen,(0,210,255), None, 180, "Start Game", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
+				settingBtn = lib.button.Create(self.screen,(0,210,255), None, 250, "Settings", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
 			
 				pygame.display.flip()
 
@@ -144,12 +146,40 @@ class GameEngine(object):
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()
-						if event.type == pygame.MOUSEBUTTONUP:
-							if startBtn.rect.collidepoint(pygame.mouse.get_pos()):
+						elif event.type == pygame.MOUSEBUTTONUP:
+							pos = pygame.mouse.get_pos()
+							if startBtn.rect.collidepoint(pos):
 								self.start_game()
-
+							if settingBtn.rect.collidepoint(pos):
+								self.settings()
+		def settings(self):
+			self.screen.fill((255, 255, 255))
+			backBtn =  lib.button.Create(self.screen,(0,210,255), 20, 20, "Back", 60, 30, (255,255,255), 24, 2,(10,10,10),1)
+			soundBtnOn =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (On)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
+			soundBtnOff =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (Off)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
+			if self.sound:
+				self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
+			else:
+				self.screen.blit(soundBtnOff.render,soundBtnOff.rect)
+			while 1:
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+							sys.exit()
+					elif event.type == pygame.MOUSEBUTTONUP:
+						pos = pygame.mouse.get_pos()
+						if backBtn.rect.collidepoint(pos):
+							self.title_screen()
+						elif soundBtnOn.rect.collidepoint(pos): # Cords Same
+							if self.sound == 1:
+								self.sound = 0
+								self.screen.blit(soundBtnOff.render,soundBtnOff.rect)
+							else: 
+								self.sound = 1
+								self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
+				pygame.display.flip()
+		
 		def start_game(self):
-			
+
 			self.draw_background()
 			self.draw_characters()
 			
@@ -174,7 +204,7 @@ class GameEngine(object):
 									self.player.rect = self.player.rect.move([-50,0])
 									self.check_characters()
 							elif event.key == pygame.K_ESCAPE:
-								self.start_title_sequence();
+								self.title_screen();
 						elif event.type == pygame.MOUSEBUTTONUP:
 							self.draw_background()
 							if self.player.equipped_item:     
