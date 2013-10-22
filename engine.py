@@ -6,7 +6,6 @@ import character
 import lib.gifsprite
 import lib.textbox
 
-
 class GameEngine(object):
 		"""docstring for GameEngine"""
 		def __init__(self):
@@ -122,21 +121,45 @@ class GameEngine(object):
 					pass
 				pass
 		def start_title_sequence(self):
+
+				pygame.font.init()
+
 				self.screen.fill((255, 255, 255))
-				pygame.display.update()
+
+				startBtn = pygame.Surface((300,50))
+				startBtn.fill((0,210,255))
+
+				startBtnPos =  startBtn.get_rect()
+				startBtnPos.centerx = self.screen.get_rect().centerx
+				startBtnPos.top = 100
+
+				font = pygame.font.Font(None, 36)
+				
+				text = font.render("Start Game", 1, (10,10, 10))
+				textpos = text.get_rect()
+				textpos.centerx = 150
+				textpos.centery = 25
+
+				startBtn.blit(text, textpos)
+
+				self.screen.blit(startBtn, startBtnPos)
+
+				pygame.display.flip()
 				while 1:
 					for event in pygame.event.get():
-						if event.type == pygame.MOUSEBUTTONUP:
-							self.start_game()
+						if event.type == pygame.QUIT:
+							sys.exit()
+						elif event.type == pygame.MOUSEBUTTONUP:
+							if startBtnPos.collidepoint(pygame.mouse.get_pos()):
+								self.start_game()
 		def start_game(self):
 			self.draw_background()
 			self.draw_characters()
-
 			while 1:
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()
-						if event.type == pygame.KEYDOWN:
+						elif event.type == pygame.KEYDOWN:
 							self.draw_background()                  
 							if event.key == pygame.K_UP:
 								self.goatrect = self.player.rect.move([0,-10])
