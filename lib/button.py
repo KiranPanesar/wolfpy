@@ -1,8 +1,8 @@
 import pygame
 
 class Create(pygame.Surface):
-	def __init__(self, background, x,y, text, width, height, colour, fontSize, border):
-		
+	def __init__(self, surface, background, x,y, text, width, height, colour, fontSize, border, borderColour):
+
 		pygame.font.init()
 
 		self.render = pygame.Surface((width,height))
@@ -19,8 +19,9 @@ class Create(pygame.Surface):
 		textpos.centerx = width / 2
 		textpos.centery = height / 2
 
-		print textpos.centery
-		print textpos.centerx
-
 		self.render.blit(text, textpos)
-	setActive
+		surface.blit(startBtn.render, startBtn.rect)
+	def setActive(self):
+		pass
+	def serInactive(self):
+		pass
