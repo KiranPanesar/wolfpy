@@ -6,8 +6,7 @@
 import engine
 
 engine = engine.GameEngine()
-# engine.start_title_sequence()
-engine.start_game()
+engine.start_title_sequence()
 # import sys
 # import pygame
 # import character

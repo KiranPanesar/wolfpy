@@ -169,8 +169,8 @@ class GameEngine(object):
 							elif event.key == pygame.K_ESCAPE:
 								self.start_title_sequence();
 						elif event.type == pygame.MOUSEBUTTONUP:
-							print pygame.mouse.get_pos()
-							if self.player.equipped_item:
+							self.draw_background()
+							if self.player.equipped_item:     
 								self.deposit_item()
 							else:
 								if self.get_item_clicked(pygame.mouse.get_pos()):								
