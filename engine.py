@@ -4,7 +4,8 @@
 import sys, pygame
 import character
 import lib.gifsprite
-import lib.textbox
+from Tkinter import *
+import fblib.fbrequest as fbrequest
 
 class GameEngine(object):
 		"""docstring for GameEngine"""
@@ -102,6 +103,7 @@ class GameEngine(object):
 				# Check if the sheep has been left with the cabbage, or the wolf with the sheep
 				if self.cabbage in current_side and self.sheep in current_side:
 					print "cabbage eaten by sheep"
+					self.share_score()
 					pass
 				elif self.sheep in current_side and self.wolf in current_side:
 					print "sheep eaten by wolf"
@@ -155,7 +157,11 @@ class GameEngine(object):
 		def start_game(self):
 			self.draw_background()
 			self.draw_characters()
+			
+			clock = pygame.time.Clock()
+
 			while 1:
+					clock.tick(30)
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()
@@ -183,3 +189,26 @@ class GameEngine(object):
 									self.right_shore_characters.remove(self.player.equipped_item)
 					self.refresh_characters()
 					pygame.display.flip()
+
+		def share_score(self):
+			master = Tk()
+			master.title("Share Score")
+
+			e = Entry(master, width=50)
+			e.pack()
+
+			e.focus_set()
+			e.insert(0,"I just completed River Crossing Game in 23 seconds!")
+
+			def callback_block():
+			    print e.get()
+			    if len(e.get()) > 0:
+			    	fb_request_manager = fbrequest.FBRequestManager("CAAJH14AVcDEBAIRjloeHaGqtJrzCr5jsSIiUNfuML6FASAZAFyAmdF2xumvszd3Vku9xnrn0pWKhxxuAZBVYecvxXLBZCJrVkPJaioWvP3gHETjlzpK6uuNyD5DrDYU3KFGBNBU6UqbMBwdo3zJSY3qvLHhhSEZD")
+			    	fb_request_manager.fb_post_message(e.get())
+			    	pass
+			    master.destroy()
+
+			b = Button(master, text="Share!", width=10, command=callback_block)
+			b.pack()
+
+			mainloop()
