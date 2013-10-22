@@ -4,7 +4,7 @@
 
 from Tkinter import *
 import sys, pygame
-import character
+import lib.character as character
 import lib.gifsprite
 import lib.button
 import fblib.fbrequest as fbrequest
@@ -178,6 +178,10 @@ class GameEngine(object):
 							else: 
 								self.sound = 1
 								self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
+						elif fbLoginBtn.rect.collidepoint(pos):
+							fb_manager = fbrequest.FBRequestManager("641940845850673", "f322228ac31f51e7dd4fb54a341ec00d", "http://COPY-AND-PASTE-INTO-THE-GAME.com")
+							fb_manager.fb_authenticate_user()
+							
 				pygame.display.flip()
 		
 		def start_game(self):
