@@ -29,7 +29,6 @@ class GameEngine(object):
 				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
 				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
 
-				pass
 		def draw_characters(self):
 				self.player = character.Character("./img/farmer.bmp")
 				self.player.rect.top = 320
@@ -57,7 +56,7 @@ class GameEngine(object):
 				self.left_shore_characters.append(self.sheep)
 
 				self.refresh_characters()
-				pass
+
 		def refresh_characters(self):
 				if self.player.equipped_item:
 					self.player.equipped_item.rect.top  = self.player.rect.top-self.player.equipped_item.rect.height
@@ -68,17 +67,13 @@ class GameEngine(object):
 				self.screen.blit(self.wolf.game_image, self.wolf.rect)
 				self.screen.blit(self.sheep.game_image, self.sheep.rect)
 
-				pass
 		def deposit_item(self):
 				if self.player.equipped_item:
 						self.player.equipped_item.rect.bottom  = self.player.rect.bottom
 						if self.player.equipped_item.rect.centerx > 450:
 							self.player.equipped_item.rect.right = self.player.equipped_item.positionRight
-							pass
 						else:
 							self.player.equipped_item.rect.left = self.player.equipped_item.positionLeft
-							pass
-		
 						self.screen.blit(self.player.equipped_item.game_image, self.player.equipped_item.rect)
 						
 						# Remove the equipped item from both the sides
@@ -124,44 +119,37 @@ class GameEngine(object):
 							print "sheep eaten by wolf"
 						elif self.cabbage in self.left_shore_characters and self.sheep in self.left_shore_characters:
 							print "cabbage eaten by sheep"
-					
 
-						
-			
-				
 		def get_item_clicked(self, position):
 				current_side = []
 				if self.player.rect.left >= 621:
 					current_side = self.right_shore_characters
 				elif self.player.rect.right <= 379:
 					current_side = self.left_shore_characters
-
 				if self.cabbage.rect.collidepoint(position) and self.cabbage in current_side:
 					return self.cabbage
 				elif self.wolf.rect.collidepoint(position) and self.wolf in current_side:
 					return self.wolf
 				elif self.sheep.rect.collidepoint(position) and self.sheep in current_side:
 					return self.sheep
-					pass
-				pass
+
 		def start_title_sequence(self):
 
-				pygame.font.init()
-
 				self.screen.fill((255, 255, 255))
-
 				startBtn = lib.button.Create(self.screen,(0,210,255), None, 200, "Start Game", 300, 50, (255,255,255), 32, 2,(10,10,10));
-				
+			
 				pygame.display.flip()
 
 				while 1:
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()
-						elif event.type == pygame.MOUSEBUTTONUP:
+						if event.type == pygame.MOUSEBUTTONUP:
 							if startBtn.rect.collidepoint(pygame.mouse.get_pos()):
 								self.start_game()
+
 		def start_game(self):
+			
 			self.draw_background()
 			self.draw_characters()
 			
