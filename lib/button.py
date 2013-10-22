@@ -3,7 +3,6 @@ class Button:
 
 				startBtn = pygame.Surface((300,50))
 				startBtn.fill((0,210,255))
-		self
 				startBtnPos =  startBtn.get_rect()
 				startBtnPos.centerx = self.screen.get_rect().centerx
 				startBtnPos.top = 100
@@ -15,4 +14,5 @@ class Button:
 				textpos.centerx = 150
 				textpos.centery = 25
 				startBtn.blit(text, textpos)
-	def checkColision 
+	def checkColision:
+		pass
