@@ -157,6 +157,7 @@ class GameEngine(object):
 			backBtn =  lib.button.Create(self.screen,(0,210,255), 20, 20, "Back", 60, 30, (255,255,255), 24, 2,(10,10,10),1)
 			soundBtnOn =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (On)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 			soundBtnOff =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (Off)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
+			fbLoginBtn =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Login", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
 			if self.sound:
 				self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
 			else:
