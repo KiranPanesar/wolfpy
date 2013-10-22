@@ -14,5 +14,6 @@ class Button:
 				textpos.centerx = 150
 				textpos.centery = 25
 				startBtn.blit(text, textpos)
+				
 	def checkColision:
 		pass
