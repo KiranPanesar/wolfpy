@@ -37,14 +37,20 @@ class GameEngine(object):
 				self.cabbage = character.Character("./img/cabbage.bmp")
 				self.cabbage.rect.top = 320
 				self.cabbage.rect.left = 50
+				self.cabbage.positionLeft = 50
+				self.cabbage.positionRight = 850
 
 				self.wolf = character.Character("./img/wolf.bmp")
 				self.wolf.rect.top = 320
-				self.wolf.rect.left = 100
+				self.wolf.rect.left = 110
+				self.wolf.positionLeft = 110
+				self.wolf.positionRight = 790
 
 				self.sheep = character.Character("./img/goat.bmp")
 				self.sheep.rect.top = 320
-				self.wolf.rect.left = 150
+				self.sheep.rect.left = 170
+				self.sheep.positionLeft = 170
+				self.sheep.positionRight = 730
 
 				self.left_shore_characters.append(self.cabbage)
 				self.left_shore_characters.append(self.wolf)
@@ -65,18 +71,22 @@ class GameEngine(object):
 				pass
 		def deposit_item(self):
 				if self.player.equipped_item:
-						self.player.equipped_item.rect.top  = self.player.rect.top
-						self.player.equipped_item.rect.left = self.player.rect.right
-						
+						self.player.equipped_item.rect.bottom  = self.player.rect.bottom
+						print self.player.equipped_item.rect.left
+						if self.player.equipped_item.rect.centerx > 450:
+							self.player.equipped_item.rect.right = self.player.equipped_item.positionRight
+							pass
+						else:
+							self.player.equipped_item.rect.left = self.player.equipped_item.positionLeft
+							pass
+		
 						self.screen.blit(self.player.equipped_item.game_image, self.player.equipped_item.rect)
 						
 						# Remove the equipped item from both the sides
 						if self.player.equipped_item in self.left_shore_characters:
 							self.left_shore_characters.remove(self.player.equipped_item)
-							pass
 						elif self.player.equipped_item in self.right_shore_characters:
 							self.right_shore_characters.remove(self.player.equipped_item)
-							pass
 
 						# Check which shore the item is on and add it
 						current_side = []
@@ -174,6 +184,7 @@ class GameEngine(object):
 							elif event.key == pygame.K_ESCAPE:
 								self.start_title_sequence();
 						elif event.type == pygame.MOUSEBUTTONUP:
+							print pygame.mouse.get_pos()
 							self.draw_background()
 							if self.player.equipped_item:     
 								self.deposit_item()
