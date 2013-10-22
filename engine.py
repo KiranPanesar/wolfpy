@@ -22,10 +22,11 @@ class GameEngine(object):
 				self.screen.fill(blue)
 				green = 0, 0, 0
 				orange = 241, 196, 15
-
+				
+				pygame.draw.rect(self.screen, (44, 62, 80), (0, 400, 900, 100), 0)
 				pygame.draw.rect(self.screen, green, (0, 379, 300, 100), 0)
 				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
-				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0)
+				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
 
 				pass
 		def draw_characters(self):
@@ -104,7 +105,6 @@ class GameEngine(object):
 				# Check if the sheep has been left with the cabbage, or the wolf with the sheep
 				if self.cabbage in current_side and self.sheep in current_side:
 					print "cabbage eaten by sheep"
-					self.share_score()
 					pass
 				elif self.sheep in current_side and self.wolf in current_side:
 					print "sheep eaten by wolf"
@@ -115,11 +115,17 @@ class GameEngine(object):
 				pass
 				
 		def get_item_clicked(self, position):
-				if self.cabbage.rect.collidepoint(position):
+				current_side = []
+				if self.player.rect.left >= 621:
+					current_side = self.right_shore_characters
+				elif self.player.rect.right <= 379:
+					current_side = self.left_shore_characters
+
+				if self.cabbage.rect.collidepoint(position) and self.cabbage in current_side:
 					return self.cabbage
-				elif self.wolf.rect.collidepoint(position):
+				elif self.wolf.rect.collidepoint(position) and self.wolf in current_side:
 					return self.wolf
-				elif self.sheep.rect.collidepoint(position):
+				elif self.sheep.rect.collidepoint(position) and self.sheep in current_side:
 					return self.sheep
 					pass
 				pass
@@ -168,11 +174,12 @@ class GameEngine(object):
 							if self.player.equipped_item:
 								self.deposit_item()
 							else:
-								self.player.equip_item(self.get_item_clicked(pygame.mouse.get_pos()))
-								if self.player.equipped_item in self.left_shore_characters:
-									self.left_shore_characters.remove(self.player.equipped_item)
-								if self.player.equipped_item in self.right_shore_characters:
-									self.right_shore_characters.remove(self.player.equipped_item)
+								if self.get_item_clicked(pygame.mouse.get_pos()):								
+									self.player.equip_item(self.get_item_clicked(pygame.mouse.get_pos()))
+									if self.player.equipped_item in self.left_shore_characters:
+										self.left_shore_characters.remove(self.player.equipped_item)
+									if self.player.equipped_item in self.right_shore_characters:
+										self.right_shore_characters.remove(self.player.equipped_item)
 					self.refresh_characters()
 					pygame.display.flip()
 
