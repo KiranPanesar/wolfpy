@@ -1,3 +1,8 @@
+# #!/usr/bin/env python
+# # encoding: utf-8
+#
+# Created by Kiran Panesar - 22/10/2013
+
 import urllib
 
 class FBRequestManager(object):
