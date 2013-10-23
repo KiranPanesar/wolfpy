@@ -1,6 +1,6 @@
 import sys, pygame
 import lib.button
-import engine
+import main_menu
 import fblib.fbrequest as fbrequest
 
 class SettingsScreen(object):
@@ -15,6 +15,7 @@ class SettingsScreen(object):
 		backBtn =  lib.button.Create(self.screen,(0,210,255), 20, 20, "Back", 60, 30, (255,255,255), 24, 2,(10,10,10),1)
 		soundBtnOn =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (On)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 		soundBtnOff =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (Off)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
+		fbLogoutBtn =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Log Out", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
 		fbLoginBtn =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Login", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
 
 		if self.sound:
@@ -30,6 +31,7 @@ class SettingsScreen(object):
 					if backBtn.rect.collidepoint(pos):
 						self.title_screen()
 					elif soundBtnOn.rect.collidepoint(pos): # Cords Same
+						print "sound button"
 						if self.sound == 1:
 							self.sound = 0
 							self.screen.blit(soundBtnOff.render,soundBtnOff.rect)
@@ -37,11 +39,18 @@ class SettingsScreen(object):
 							self.sound = 1
 							self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
 					elif fbLoginBtn.rect.collidepoint(pos):
-						fb_manager = fbrequest.FBRequestManager("641940845850673", "f322228ac31f51e7dd4fb54a341ec00d", "http://COPY-AND-PASTE-INTO-THE-GAME.com")
-						fb_manager.fb_authenticate_user()
 						
 			pygame.display.flip()
-	def title_screen():
+	def title_screen(self):
+		main_screen = main_menu.MainMenuScreen(self.screen)
+		main_screen.show_screen()
+
 		pass
-	def function():
-		pass
+	def toggle_user_login(self):
+		fb_manager = fbrequest.FBRequestManager("641940845850673", "f322228ac31f51e7dd4fb54a341ec00d", "http://COPY-AND-PASTE-INTO-THE-GAME.com")
+		if fb_manager.fb_is_user_authd():
+			fb_manager.fb_log_out()
+			fbLoginBtn =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Login", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
+		else:
+			fb_manager.fb_authenticate_user()
+			fbLogoutBtn =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Log Out", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
