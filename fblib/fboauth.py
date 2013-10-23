@@ -65,7 +65,7 @@ class FBOAuthManager(object):
 			self.load_access_token()
 	
 	def has_access_token_expired(self):
-		return access_token_expirery_epoch <= time.time()
+		return self.access_token_expirery_epoch <= time.time()
 
 	def is_user_logged_in():
 		return self.access_token != None or self.has_access_token_expired()
