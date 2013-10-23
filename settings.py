@@ -18,7 +18,8 @@ class SettingsScreen(object):
 		soundBtnOff =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (Off)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 		self.fb_toggle_button =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Log In", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
 
-		if self.fb_manager.fb_is_user_authd:
+		if self.fb_manager.fb_is_user_authd():
+			print self.fb_manager.fb_oauth_manager
 			self.fb_toggle_button.change_text("Log Out")
 		
 		if self.sound:
