@@ -5,7 +5,7 @@
 from Tkinter import *
 import sys, pygame
 import lib.character as character
-import lib.gifsprite
+import lib.gifsprite as gifsprite
 import lib.button
 import fblib.fbrequest as fbrequest
 
@@ -30,6 +30,9 @@ class GameEngine(object):
 				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
 				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
 				pygame.draw.rect(self.screen, (107,62,46), (380, 379, 100, 20), 0) # right shore
+
+				# farmerGif = gifsprite.Create(['Farmer Walk Animation 01a.png', 'Farmer Walk Animation 02a.png'], 50, 300)
+				# farmerGif.group.draw(screen)
 
 		def draw_characters(self):
 				self.player = character.Character("./img/farmer.bmp")
