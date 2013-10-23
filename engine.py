@@ -73,8 +73,7 @@ class GameEngine(object):
 				self.sheep.positionLeft = 170
 				self.sheep.positionRight = 730
 
-				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 0, 325)
-				self.boat.rect.centerx = 325
+				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 266, 325)
 				self.boat.binding = 0
 
 				self.left_shore_characters.append(self.cabbage)
@@ -218,7 +217,6 @@ class GameEngine(object):
 								self.player.game_image.update()
 								self.player.game_image.setFlip(1)
 								if self.player.equipped_item:
-									print "here"
 									self.player.equipped_item.game_image.update()
 									self.player.equipped_item.game_image.setFlip(1)
 								if self.player.game_image.rect.right <= 850:
