@@ -202,7 +202,7 @@ class GameEngine(object):
 			# scheduler = sched.scheduler(time.time, time.sleep)
 			# scheduler.enter(1, 1, self.clock_ticked(), (scheduler,))
 			# scheduler.run()
-
+			
 			clock = pygame.time.Clock()
 			time_elapsed_since_last_action = 0
 			while 1:

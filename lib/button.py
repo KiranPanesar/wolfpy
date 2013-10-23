@@ -33,7 +33,7 @@ class Create(pygame.Surface):
 		textpos = text.get_rect()
 		textpos.centerx = width / 2
 		textpos.centery = height / 2
-		self.background_store = self.border
+		self.background_store = self.border.copy()
 		
 		self.border.blit(text, textpos)
 		self.render = self.border
@@ -47,8 +47,8 @@ class Create(pygame.Surface):
 		textpos = text.get_rect()
 		textpos.centerx = self.width / 2
 		textpos.centery = self.height / 2
-
 		self.background_store.blit(text, textpos)
-		self.render = self.border
+		self.render = self.background_store
+
 		if render:
 			self.renderSurface.blit(self.background_store, self.borderRect)
