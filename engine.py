@@ -59,8 +59,8 @@ class GameEngine(object):
 				self.sheep.game_image.rect.top = 320
 				self.sheep.game_image.rect.left = 180
 
-				self.wolf.positionLeft = 170
-				self.wolf.positionRight = 730
+				self.sheep.positionLeft = 170
+				self.sheep.positionRight = 730
 
 				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 163, 90)
 				self.boat.rect.top = 290
@@ -79,8 +79,8 @@ class GameEngine(object):
 				self.draw_background()
 				
 				if self.player.equipped_item:
-					self.player.equipped_item.rect.top  = self.player.game_image.rect.top-self.player.equipped_item.rect.height
-					self.player.equipped_item.rect.left = self.player.game_image.rect.left
+					self.player.equipped_item.game_image.rect.top  = self.player.game_image.rect.top-self.player.equipped_item.game_image.rect.height
+					self.player.equipped_item.game_image.rect.left = self.player.game_image.rect.left
 
 				self.player.game_image.group.draw(self.screen)
 				self.boat.group.draw(self.screen)
@@ -90,12 +90,13 @@ class GameEngine(object):
 
 		def deposit_item(self):
 				if self.player.equipped_item:
-						self.player.equipped_item.rect.bottom  = self.player.game_image.rect.bottom
-						if self.player.equipped_item.rect.centerx > 450:
-							self.player.equipped_item.rect.right = self.player.equipped_item.positionRight
+						self.player.equipped_item.game_image.rect.bottom  = self.player.game_image.rect.bottom
+						if self.player.equipped_item.game_image.rect.centerx > 450:
+							self.player.equipped_item.game_image.rect.right = self.player.equipped_item.positionRight
 						else:
-							self.player.equipped_item.rect.left = self.player.equipped_item.positionLeft
-						self.screen.blit(self.player.equipped_item.game_image, self.player.equipped_item.rect)
+							self.player.equipped_item.game_image.rect.left = self.player.equipped_item.positionLeft
+						self.player.equipped_item.game_image.group.draw(self.screen)
+						# self.screen.blit(, self.player.equipped_item.game_image.rect)
 						
 						# Remove the equipped item from both the sides
 						if self.player.equipped_item in self.left_shore_characters:
@@ -105,9 +106,9 @@ class GameEngine(object):
 
 						# Check which shore the item is on and add it
 						current_side = []
-						if self.player.equipped_item.rect.left >= 621:
+						if self.player.equipped_item.game_image.rect.left >= 621:
 							current_side = self.right_shore_characters
-						elif self.player.equipped_item.rect.right <= 379:
+						elif self.player.equipped_item.game_image.rect.right <= 379:
 							current_side = self.left_shore_characters
 
 						current_side.append(self.player.equipped_item)
