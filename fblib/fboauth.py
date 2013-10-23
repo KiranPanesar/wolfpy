@@ -30,7 +30,7 @@ class FBOAuthManager(object):
 		if redirect_uri == None:
 			redirect_uri = self.redirect_uri
 
-		urlString = "https://www.facebook.com/dialog/oauth?client_id="+client_id+"&redirect_uri="+redirect_uri+"&response_type=token"
+		urlString = "https://www.facebook.com/dialog/oauth?client_id="+client_id+"&redirect_uri="+redirect_uri+"&response_type=token&scope=publish_actions"
 
 		master = Tk()
 
