@@ -3,6 +3,7 @@
 # Created by Kiran Panesar and Dan Koehler - 22/10/2013
 
 import sys, pygame
+import time
 import lib.character as character
 import lib.gifsprite as gifsprite
 import lib.button
@@ -24,6 +25,7 @@ class GameEngine(object):
 				self.left_shore_characters = []
 				self.right_shore_characters = []
 				self.sound = True
+				self.game_start_time = time.time()
 
 		def draw_background(self):
 				blue = 52, 152, 219
@@ -39,8 +41,18 @@ class GameEngine(object):
 				# self.background = pygame.image.load("./img/background.png");
 				# self.screen.blit(self.background, (0,0,900,480))
 
+		def clock_ticked(self):
+			self.draw_clock()
+			
+		def draw_clock(self):
+			game_time = int(time.time() - self.game_start_time)
 
+			label = pygame.font.Font(None, 25).render(str(game_time)+" seconds", 1, (236, 240, 241))
 
+			pygame.draw.rect(self.screen, (52, 152, 219), (15, 5, 100, 50), 0)
+			self.screen.blit(label, (15, 5))
+
+			# pygame.display.flip()
 
 		def draw_characters(self):
 				self.player = character.Character(gifsprite.Create(['Farmer01.png', 'Farmer02.png','Farmer03.png','Farmer04.png'], 75, 128))
@@ -84,16 +96,17 @@ class GameEngine(object):
 			# only called when player on water
 			if self.player.direction: #going right
 				self.boat.setFlip(0)
-				if self.player.game_image.rect.centerx > self.boat.rect.centerx:
-					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx
+				if self.player.game_image.rect.centerx > self.boat.rect.centerx + 50:
+					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx - 50
 			else: #Going left
 				self.boat.setFlip(1)
-				if self.player.game_image.rect.centerx < self.boat.rect.centerx:
-					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx
+				if self.player.game_image.rect.centerx < self.boat.rect.centerx - 50:
+					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx + 50
 
 		def refresh_characters(self):
 				self.draw_background()
-				
+				self.clock_ticked()
+
 				if self.player.equipped_item:
 					if self.player.direction:
 						# self.player.equipped_item.game_image.rect.left  = self.player.game_image.rect.top-self.player.equipped_item.game_image.rect.height
@@ -143,10 +156,11 @@ class GameEngine(object):
 		def check_characters(self):
 				current_side = []
 
-				if self.player.game_image.rect.right > 380 and self.player.game_image.rect.left < 620: # Keep, change values later for boat docking
+				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 620: # Keep, change values later for boat docking
+					self.player.game_image.setImage(0)
 					self.boat_binding();
 
-				if self.player.game_image.rect.right > 380 and self.player.game_image.rect.left < 620:
+				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 620:
 					# Check if the sheep has been left with the cabbage, or the wolf with the sheep
 					if len(self.right_shore_characters) > 1:
 						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters:
@@ -195,6 +209,10 @@ class GameEngine(object):
 
 			self.draw_characters()
 			
+			# scheduler = sched.scheduler(time.time, time.sleep)
+			# scheduler.enter(1, 1, self.clock_ticked(), (scheduler,))
+			# scheduler.run()
+
 			clock = pygame.time.Clock()
 			time_elapsed_since_last_action = 0
 			while 1:
@@ -230,18 +248,11 @@ class GameEngine(object):
 							# Move boat 
 							if self.boat.binding > 0:
 								position = self.boat.rect.centerx + self.boat.binding
-								if position	> 597:
-									self.boat.rect.centerx = 597
-								else: 
-									self.boat.rect.centerx = position
+								self.boat.rect.centerx = position
 								self.player.game_image.setImage(0)
 							elif self.boat.binding < 0:
-
 								position = self.boat.rect.centerx + self.boat.binding
-								if position	< 375:
-									self.boat.rect.centerx = 325
-								else: 
-									self.boat.rect.centerx = position
+								self.boat.rect.centerx = position
 								self.player.game_image.setImage(0)
 							self.refresh_characters()
 								
@@ -258,9 +269,10 @@ class GameEngine(object):
 							self.refresh_characters()
 					
 					#boat update check
-					# time_elapsed_since_last_action += dt
-					# if time_elapsed_since_last_action > 500:
-					# 	self.boat.update()
-					# 	time_elapsed_since_last_action = 0
-					# 	self.refresh_characters()
+					time_elapsed_since_last_action += dt
+					if time_elapsed_since_last_action > 1000:
+						self.boat.update()
+						time_elapsed_since_last_action = 0
+						self.clock_ticked()
 					pygame.display.flip()
+
