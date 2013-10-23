@@ -9,7 +9,7 @@ class SettingsScreen(object):
 		super(SettingsScreen, self).__init__()
 		self.screen = screen
 		self.sound = True
-		self.fb_manager = fbrequest.FBRequestManager("641940845850673", "f322228ac31f51e7dd4fb54a341ec00d", "http://COPY-AND-PASTE-INTO-THE-GAME.com")
+		self.fb_manager = fbrequest.FBRequestManager("641940845850673", "f322228ac31f51e7dd4fb54a341ec00d", "http://kiranpanesar.com/river_adventure/auth_user.html")
 
 	def show_screen(self):
 		self.screen.fill((255, 255, 255))
