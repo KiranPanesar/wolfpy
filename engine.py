@@ -40,10 +40,10 @@ class GameEngine(object):
 				self.screen.blit(self.right_bank, (600, 380))
 				self.river.group.draw(self.screen)
 
-		def clock_ticked(self):
-			self.draw_clock()
-			self.river.update()
-			self.river.group.draw(self.screen)
+		def clock_ticked(self, update_river = 1):
+			if update_river:
+				self.river.update()
+				self.refresh_characters(0)
 			
 		def draw_clock(self):
 			game_time = int(time.time() - self.game_start_time)
@@ -94,10 +94,9 @@ class GameEngine(object):
 				if self.player.game_image.rect.centerx < self.boat.rect.centerx - 50:
 					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx + 50
 
-		def refresh_characters(self):
+		def refresh_characters(self,call_clock = 1):
 				self.refresh_background()
-				self.clock_ticked()
-
+				self.draw_clock()
 				if self.player.equipped_item:
 					if self.player.direction:
 						# self.player.equipped_item.game_image.rect.left  = self.player.game_image.rect.top-self.player.equipped_item.game_image.rect.height
@@ -137,14 +136,11 @@ class GameEngine(object):
 						current_side.append(self.player.equipped_item)
 
 						self.player.deposit_item()
-
+						self.refresh_characters()
 						# Check if all the characters are on the right side
 						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters and self.wolf in self.right_shore_characters:
 							complete_screen = game_complete.GameCompletedScreen(self.screen, int(time.time()-self.game_start_time))
 							complete_screen.show_screen()
-
-
-						self.refresh_characters()
 						pass
 				pass
 
@@ -221,6 +217,10 @@ class GameEngine(object):
 								self.player.direction = 1
 								self.player.game_image.update()
 								self.player.game_image.setFlip(1)
+								if self.player.equipped_item:
+									print "here"
+									self.player.equipped_item.game_image.update()
+									self.player.equipped_item.game_image.setFlip(1)
 								if self.player.game_image.rect.right <= 850:
 									self.player.game_image.rect = self.player.game_image.rect.move([self.player.step_interval, 0])
 									self.check_characters()
@@ -231,6 +231,9 @@ class GameEngine(object):
 								self.player.direction = 0
 								self.player.game_image.update()
 								self.player.game_image.setFlip(0)
+								if self.player.equipped_item:
+									self.player.equipped_item.game_image.update()
+									self.player.equipped_item.game_image.setFlip(0)
 								if self.player.game_image.rect.left >= self.player.step_interval:
 									self.player.game_image.rect = self.player.game_image.rect.move([-(self.player.step_interval),0])
 									self.check_characters()
