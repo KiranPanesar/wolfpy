@@ -12,6 +12,7 @@ import lib.message_popup as message_popup
 import game_over
 import settings
 import main_menu
+import game_complete
 
 class GameEngine(object):
 		"""docstring for GameEngine"""
@@ -148,6 +149,12 @@ class GameEngine(object):
 						current_side.append(self.player.equipped_item)
 
 						self.player.deposit_item()
+
+						# Check if all the characters are on the right side
+						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters and self.wolf in self.right_shore_characters:
+							complete_screen = game_complete.GameCompletedScreen(self.screen, int(time.time()-self.game_start_time))
+							complete_screen.show_screen()
+
 
 						self.refresh_characters()
 						pass
