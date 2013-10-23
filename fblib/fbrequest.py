@@ -32,15 +32,29 @@ class FBRequestManager(object):
 	def fb_load_info_for_current_user(self):
 		self.fb_oauth_manager.load_and_check_access_token()
 		response = urllib.urlopen("https://graph.facebook.com/me?access_token="+self.fb_oauth_manager.access_token).read()
-		# print response
-		print json.loads(response)
+		
+		if error_from_json(json.loads(response)):
+			return error_from_json(json.loads(response))
+
+		return json.loads(response)
 
 	# Posts a status as the currently-auth'd
 	def fb_post_message(self, status_message):
 		self.fb_oauth_manager.load_and_check_access_token()
 		data = {"access_token" : self.fb_oauth_manager.access_token, "message" : status_message}
 		data = urllib.urlencode(data)
-		urllib.urlopen("https://graph.facebook.com/me/feed", data)
-	
+		response = urllib.urlopen("https://graph.facebook.com/me/feed", data).read()
+
+		return error_from_json(json.loads(response))
+
 	def fb_is_user_authd(self):
 		return self.fb_oauth_manager.is_user_logged_in
+
+
+def error_from_json(json_dict):
+	json_error = None
+	if json_dict != None:
+		if "error" in json_dict:
+			json_error = FBError(json_dict["error"]["message"], str(json_dict["error"]["code"]))
+
+	return json_error
