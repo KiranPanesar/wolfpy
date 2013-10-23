@@ -13,7 +13,11 @@ class GameOverScreen(object):
 	def __init__(self, screen, scenario):
 		super(GameOverScreen, self).__init__()
 		self.screen = screen
-		self.screen.fill((255, 255, 255))
+
+		background_surface = pygame.Surface((900,480))  
+		background_surface.set_alpha(128)               
+		background_surface.fill((255,255,255))           
+		self.screen.blit(background_surface, (0,0)) 
 
 		image_file_string = None
 		if scenario == 0:
