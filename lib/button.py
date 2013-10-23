@@ -21,7 +21,7 @@ class Create(pygame.Surface):
 		self.rect =  self.render.get_rect()
 		self.rect.top = border
 		self.rect.left = border
-		# Let's blits these two!
+		# Let's blit these two!
 		self.border.blit(self.render, self.rect)
 		self.rect = self.borderRect
 		font = pygame.font.Font(None, fontSize)
