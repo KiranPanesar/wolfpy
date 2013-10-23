@@ -5,15 +5,15 @@ import pygame, os
 Gif Sprite Class - Daniel Koehler
 
 	Initiate in the form:
-		fooGif = GifSprite(['farmer.v1.1.png', 'farmer.v1.2.png'], xcord, ycord)
+		fooGif = GifSprite(['Farmer Walk Animation 01a.png', 'Farmer Walk Animation 02a.png'], xcord, ycord)
 		fooGifGroup = pygame.sprite.Group(goatGif)
 	Draw in loop in the form:
 		Sets states:  e.g. goatGif.setFlip(1) or goatGif.update()
 		Then blitz Group: fooGifGroup.draw(screen)
 """
-class GifSprite(pygame.sprite.Sprite):
-	def __init__(self,passedImageses,x,y):
-		super(GifSprite, self).__init__()
+class Create(pygame.sprite.Sprite):
+	def __init__(self,passedImages,x,y):
+		super(Create, self).__init__()
 		self.images = []
 		self.index = 0
 		self.flip = False
@@ -24,10 +24,13 @@ class GifSprite(pygame.sprite.Sprite):
 				self.image = self.images[self.index]
 			else:
 				self.image = pygame.transform.flip(self.images[self.index], 1, 0)
-		self.rect = pygame.Rect(0, 0, x, y)
+		self.rect = self.image.get_rect()
+		self.rect.left = x
+		self.rect.top = y
+		self.group = pygame.sprite.Group(self)
 
 
-	def load_image(name):
+	def load_image(self,name):
 	    fullname = os.path.join('data', name)
 	    # Still slightly unsure of try-excpection statments, thought implimenting one here might be useful for null resources in terms of debugging Tuesday.
 	    try:
@@ -37,6 +40,14 @@ class GifSprite(pygame.sprite.Sprite):
 	        raise SystemExit, message
 	    image = image.convert()
 	    return image, image.get_rect()
+	def postion(self, left, top, flip):
+		self.flip = flip
+		if self.flip == 0:
+			self.image = self.images[self.index]
+		else:
+			self.image = pygame.transform.flip(self.images[self.index], 1, 0)
+		self.rect.left = left
+		self.rect.top = top
 
 	def update(self):
 		self.index += 1
