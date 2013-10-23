@@ -5,7 +5,7 @@
 
 import engine
 
-engine = engine.GameEngine()
+engine = engine.GameEngine(None)
 # engine.title_screen()
 engine.title_screen()
 # import sys  

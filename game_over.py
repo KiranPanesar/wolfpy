@@ -41,11 +41,11 @@ class GameOverScreen(object):
 					pos = pygame.mouse.get_pos()
 					if main_menu_button.rect.collidepoint(pos):
 						print "Main menu clicked"
-						game_engine = engine.GameEngine()
+						game_engine = engine.GameEngine(self.screen)
 						game_engine.title_screen()
 					elif retry_button.rect.collidepoint(pos):
 						print "Rety button clicked"
-						game_engine = engine.GameEngine()
+						game_engine = engine.GameEngine(self.screen)
 						game_engine.start_game()
 
 			pygame.display.flip()
