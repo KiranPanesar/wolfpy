@@ -1,6 +1,7 @@
 import sys, pygame
 import lib.button as button
-
+import main_menu
+import fblib.fbrequest as fbrequest
 
 class GameCompletedScreen(object):
 	"""docstring for GameCompletedScreen"""
@@ -8,6 +9,7 @@ class GameCompletedScreen(object):
 		super(GameCompletedScreen, self).__init__()
 		self.screen = screen
 		self.time_taken = time_taken
+		self.fb_manager = fbrequest.FBRequestManager("641940845850673", "f322228ac31f51e7dd4fb54a341ec00d", "http://COPY-AND-PASTE-INTO-THE-GAME.com")
 
 	def show_screen(self):
 		background_surface = pygame.Surface((900,480))  
@@ -29,12 +31,11 @@ class GameCompletedScreen(object):
 					pos = pygame.mouse.get_pos()
 					if main_menu_button.rect.collidepoint(pos):
 						print "Main menu clicked"
-						game_engine = engine.GameEngine(self.screen)
-						game_engine.title_screen()
+						menu = main_menu.MainMenuScreen(self.screen)
+						menu.show_screen()
 					elif share_button.rect.collidepoint(pos):
-						print "Rety button clicked"
-						game_engine = engine.GameEngine(self.screen)
-						game_engine.start_game()
+						print "share button clicked"
+						self.fb_manager.fb_post_message("I've just completed River Crossing Adventure in "+ str(self.time_taken) + " seconds!")
 
 			pygame.display.flip()
 

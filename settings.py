@@ -43,7 +43,6 @@ class SettingsScreen(object):
 							self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
 					elif self.fb_toggle_button.rect.collidepoint(pos):
 						self.toggle_user_login()
-
 			pygame.display.flip()
 	def title_screen(self):
 		main_screen = main_menu.MainMenuScreen(self.screen)
@@ -60,4 +59,3 @@ class SettingsScreen(object):
 			print "logging in"
 			self.fb_manager.fb_authenticate_user()
 			self.fb_toggle_button.change_text("Log Out")
-
