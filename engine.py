@@ -28,18 +28,15 @@ class GameEngine(object):
 				self.game_start_time = time.time()
 
 		def draw_background(self):
-				blue = 52, 152, 219
-				self.screen.fill(blue)
-				green = 0, 0, 0
-				orange = 241, 196, 15
-				
-				pygame.draw.rect(self.screen, (44, 62, 80), (0, 400, 900, 100), 0)
-				pygame.draw.rect(self.screen, green, (0, 379, 300, 100), 0)
-				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
-				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
+				# blue = 52, 152, 219
+				# self.screen.fill(blue)
 
-				# self.background = pygame.image.load("./img/background.png");
-				# self.screen.blit(self.background, (0,0,900,480))
+				background = pygame.image.load('./img/Background.png').convert_alpha()
+				left_bank = pygame.image.load('./img/Bank Left.png').convert_alpha()
+				right_bank = pygame.image.load('./img/Bank Right.png').convert_alpha()
+				self.screen.blit(background, (0, 0))
+				self.screen.blit(left_bank, (0, 380))
+				self.screen.blit(right_bank, (620, 380))
 
 		def clock_ticked(self):
 			self.draw_clock()
