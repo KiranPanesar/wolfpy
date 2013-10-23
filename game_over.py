@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# encoding: utf-8
+# Created by Kiran Panesar and Dan Koehler - 22/10/2013
+
 import sys, pygame
 import lib.button as button
 import engine
@@ -10,6 +14,17 @@ class GameOverScreen(object):
 		super(GameOverScreen, self).__init__()
 		self.screen = screen
 		self.screen.fill((255, 255, 255))
+
+		image_file_string = None
+		if scenario == 0:
+			image_file_string = "./img/Game Over Cabbage.png"
+		else:
+			image_file_string = "./img/Game Over Wolf.png"
+
+		image = pygame.image.load(image_file_string).convert_alpha()
+		image_rect = image.get_rect()
+
+		self.screen.blit(image, image_rect)		
 
 	def show_screen(self):
 		retry_button	  	=  button.Create(self.screen,(0,210,255), None, 300, "Try again", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
