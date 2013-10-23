@@ -27,28 +27,28 @@ class Create(pygame.Surface):
 		# Let's blit these two!
 		self.border.blit(self.render, self.rect)
 		self.rect = self.borderRect
-		font = pygame.font.Font(None, fontSize)
+		self.font = pygame.font.Font(None, fontSize)
 		
-		text = font.render(text, 1, (colour))
+		text = self.font.render(text, 1, (colour))
 		textpos = text.get_rect()
 		textpos.centerx = width / 2
 		textpos.centery = height / 2
-
+		self.background_store = self.border
+		
 		self.border.blit(text, textpos)
 		self.render = self.border
 		if render:
 			self.renderSurface.blit(self.border, self.borderRect)
 
-	def changeText(self, text, colour = 0, render=1):
+	def change_text(self, text, colour = 0, render=1):
 		if colour == 0:
 			colour = self.colour
-		text = font.render(text, 1, (colour))
+		text = self.font.render(text, 1, (colour))
 		textpos = text.get_rect()
 		textpos.centerx = self.width / 2
 		textpos.centery = self.height / 2
 
-		self.border.blit(text, textpos)
+		self.background_store.blit(text, textpos)
 		self.render = self.border
 		if render:
-			self.renderSurface.blit(self.border, self.borderRect)
-	
+			self.renderSurface.blit(self.background_store, self.borderRect)

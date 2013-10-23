@@ -51,7 +51,7 @@ class FBRequestManager(object):
 		return error_from_json(json.loads(response))
 
 	def fb_is_user_authd(self):
-		return self.fb_oauth_manager.is_user_logged_in
+		return self.fb_oauth_manager.is_user_logged_in()
 
 
 def error_from_json(json_dict):
