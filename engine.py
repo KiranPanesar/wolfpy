@@ -262,7 +262,7 @@ class GameEngine(object):
 							elif self.boat.binding < 0:
 
 								position = self.boat.rect.centerx + self.boat.binding
-								if position	< 350:
+								if position	< 375:
 									self.boat.rect.centerx = 325
 								else: 
 									self.boat.rect.centerx = position
