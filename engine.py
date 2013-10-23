@@ -29,6 +29,8 @@ class GameEngine(object):
 				self.game_start_time = time.time()
 
 		def draw_background(self):
+				self.cloud = pygame.image.load('./img/Cloud.png').convert_alpha()
+				self.sun = pygame.image.load('./img/Sun.png').convert_alpha()
 				self.river = gifsprite.Create(['River 1.png', 'River 1a.png'], 300, 400)
 				self.background = pygame.image.load('./img/Background.png').convert_alpha()
 				self.left_bank = pygame.image.load('./img/Bank Left.png').convert_alpha()
@@ -36,6 +38,9 @@ class GameEngine(object):
 
 		def refresh_background(self):
 				self.screen.blit(self.background, (0, 0)) # Draw First!
+				self.screen.blit(self.cloud, (145, 24))
+				self.screen.blit(self.cloud, (515, 54))
+				self.screen.blit(self.sun, (800, 24))
 				self.screen.blit(self.left_bank, (0, 380))
 				self.screen.blit(self.right_bank, (600, 380))
 				self.river.group.draw(self.screen)
@@ -155,21 +160,25 @@ class GameEngine(object):
 					if len(self.right_shore_characters) > 1:
 						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters:
 							print "cabbage eaten by sheep"
+							self.refresh_characters()
 							end_game = game_over.GameOverScreen(self.screen, 0)
 							end_game.show_screen()
 						elif self.sheep in self.right_shore_characters and self.wolf in self.right_shore_characters:
 							print "sheep eaten by wolf"
+							self.refresh_characters()
 							end_game = game_over.GameOverScreen(self.screen, 1)
 							end_game.show_screen()
 
 					else:
 						if self.sheep in self.left_shore_characters and self.wolf in self.left_shore_characters:
 							print "sheep eaten by wolf"
+							self.refresh_characters()
 							end_game = game_over.GameOverScreen(self.screen, 1)
 							end_game.show_screen()
 
 						elif self.cabbage in self.left_shore_characters and self.sheep in self.left_shore_characters:
 							print "cabbage eaten by sheep"
+							self.refresh_characters()
 							end_game = game_over.GameOverScreen(self.screen, 0)
 							end_game.show_screen()
 
@@ -266,6 +275,7 @@ class GameEngine(object):
 					
 					#Timer Function
 					time_elapsed_since_last_action += dt
+									
 					if time_elapsed_since_last_action > 1000:
 						self.boat.update()
 						time_elapsed_since_last_action = 0
