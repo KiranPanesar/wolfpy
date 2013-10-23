@@ -28,6 +28,9 @@ class FBRequestManager(object):
 	def fb_authenticate_user(self):
 		self.fb_oauth_manager.fb_authenticate_user(self.client_id, self.redirect_uri, self.client_secret)
 
+	def fb_log_out(self):
+		self.fb_oauth_manager.destroy_session()
+		
 	# Loads info on the currently-auth'd user
 	def fb_load_info_for_current_user(self):
 		self.fb_oauth_manager.load_and_check_access_token()

@@ -48,7 +48,6 @@ class FBOAuthManager(object):
 		    	url_string = e.get()
 		    	self.access_token = url_string[url_string.find("=")+1:url_string.find("&expires_in")]
 		    	expiration_epoch = url_string[url_string.find("&expires_in=")+12:]
-		    	print expiration_epoch
 		    	self.save_access_token(self.access_token, expiration_epoch)
 
 		    master.destroy()
@@ -57,6 +56,15 @@ class FBOAuthManager(object):
 		b.pack()
 
 		mainloop()
+	
+	def destroy_session(self):
+		self.access_token = None
+		self.access_token_expirery_epoch = 0
+
+		# Clear the CSV file containing the token data
+		csv_file_name = "./fblib/token_data.csv"
+		csv_file = open(csv_file_name, "w+")
+		csv_file.close()
 
 	def load_and_check_access_token(self):
 		if self.has_access_token_expired():
