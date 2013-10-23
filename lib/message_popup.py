@@ -7,7 +7,7 @@ from Tkinter import *
 
 class MessagePopUp(object):
 	"""docstring for MessagePopUp"""
-	def __init__(self, popup_title, popup_message, button_text, button_action):
+	def __init__(self, popup_title, popup_message, button_text, button_action = None):
 		super(MessagePopUp, self).__init__()
 		self.popup_title = popup_title
 		self.popup_message = popup_message
