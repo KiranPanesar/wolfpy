@@ -2,12 +2,13 @@
 # encoding: utf-8
 # Created by Kiran Panesar and Dan Koehler - 22/10/2013
 
-from Tkinter import *
 import sys, pygame
 import lib.character as character
 import lib.gifsprite as gifsprite
 import lib.button
 import fblib.fbrequest as fbrequest
+import lib.message_popup as message_popup
+import game_over
 
 class GameEngine(object):
 		"""docstring for GameEngine"""
@@ -240,26 +241,3 @@ class GameEngine(object):
 					# 	time_elapsed_since_last_action = 0
 					# 	self.refresh_characters()
 					pygame.display.flip()
-
-		def share_score(self):
-			master = Tk()
-			master.title("Share Score")
-
-			e = Entry(master, width=50)
-			e.pack()
-
-			e.focus_set()
-			e.insert(0,"I just completed River Crossing Game in 23 seconds!")
-
-			def callback_block():
-				print e.get()
-				if len(e.get()) > 0:
-					fb_request_manager = fbrequest.FBRequestManager("CAAJH14AVcDEBAIRjloeHaGqtJrzCr5jsSIiUNfuML6FASAZAFyAmdF2xumvszd3Vku9xnrn0pWKhxxuAZBVYecvxXLBZCJrVkPJaioWvP3gHETjlzpK6uuNyD5DrDYU3KFGBNBU6UqbMBwdo3zJSY3qvLHhhSEZD")
-					fb_request_manager.fb_post_message(e.get())
-					pass
-				master.destroy()
-
-			b = Button(master, text="Share!", width=10, command=callback_block)
-			b.pack()
-
-			mainloop()
