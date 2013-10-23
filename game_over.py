@@ -9,12 +9,9 @@ class GameOverScreen(object):
 	def __init__(self, screen, scenario):
 		super(GameOverScreen, self).__init__()
 		self.screen = screen
-
-		image = pygame.image.load("./img/Game Over Wolf Sheep.png").convert_alpha()
-		
-	def show_screen(self):
 		self.screen.fill((255, 255, 255))
 
+	def show_screen(self):
 		retry_button	  	=  button.Create(self.screen,(0,210,255), None, 300, "Try again", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 		main_menu_button 	=  button.Create(self.screen,(0,210,255), None, 370, "Main Menu", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 
