@@ -64,8 +64,8 @@ class Create(pygame.sprite.Sprite):
 			self.image = self.images[self.index]
 		else:
 			self.image = pygame.transform.flip(self.images[self.index], 1, 0)
-	def setInitialImage(self):
+	def setImage(self, index):
 		if self.flip == 0:
-			self.image = self.images[0]
+			self.image = self.images[index]
 		else:
-			self.image = pygame.transform.flip(self.images[0], 1, 0)
+			self.image = pygame.transform.flip(self.images[index], 1, 0)

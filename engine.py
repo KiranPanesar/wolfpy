@@ -31,32 +31,41 @@ class GameEngine(object):
 				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
 				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
 
+				# self.background = pygame.image.load("./img/background.png");
+				# self.screen.blit(self.background, (0,0,900,480))
+
+
+
 
 		def draw_characters(self):
 				self.player = character.Character(gifsprite.Create(['Farmer01.png', 'Farmer02.png','Farmer03.png','Farmer04.png'], 75, 128))
-				self.player.game_image.rect.top = 260
+				self.player.game_image.rect.top = 265
+				self.player.game_image.rect.left = 10
 
-				self.cabbage = character.Character("./img/cabbage.bmp")
-				self.cabbage.rect.top = 320
-				self.cabbage.rect.left = 50
+				self.cabbage = character.Character(gifsprite.Create(['Cabbage01.png', 'Cabbage02.png','Cabbage03.png','Cabbage04.png'], 123, 100))
+				self.cabbage.game_image.rect.top = 290
+				self.cabbage.game_image.rect.left = 60
 				self.cabbage.positionLeft = 50
 				self.cabbage.positionRight = 850
 
-				self.wolf = character.Character("./img/wolf.bmp")
-				self.wolf.rect.top = 320
-				self.wolf.rect.left = 110
+				self.wolf = character.Character(gifsprite.Create(['Wolf01.png', 'Wolf02.png','Wolf03.png'], 64, 40))
+				self.wolf.game_image.rect.top = 340
+				self.wolf.game_image.rect.left = 180
+
 				self.wolf.positionLeft = 110
 				self.wolf.positionRight = 790
 
-				self.sheep = character.Character("./img/goat.bmp")
-				self.sheep.rect.top = 320
-				self.sheep.rect.left = 170
-				self.sheep.positionLeft = 170
-				self.sheep.positionRight = 730
+				self.sheep = character.Character(gifsprite.Create(['Sheep01.png', 'Sheep02.png'], 40, 40))
+				self.sheep.game_image.rect.top = 320
+				self.sheep.game_image.rect.left = 180
+
+				self.wolf.positionLeft = 170
+				self.wolf.positionRight = 730
 
 				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 163, 90)
-				self.boat.rect.top = 330
-				self.boat.rect.left = 280
+				self.boat.rect.top = 290
+				self.boat.rect.left = 220
+
 				self.boat.positionLeft = 370
 				self.boat.positionRight = 730
 
@@ -75,11 +84,9 @@ class GameEngine(object):
 
 				self.player.game_image.group.draw(self.screen)
 				self.boat.group.draw(self.screen)
-
-				self.screen.blit(self.cabbage.game_image, self.cabbage.rect)
-				self.screen.blit(self.wolf.game_image, self.wolf.rect)
-				self.screen.blit(self.sheep.game_image, self.sheep.rect)
-				
+				self.cabbage.game_image.group.draw(self.screen)
+				self.wolf.game_image.group.draw(self.screen)
+				self.sheep.game_image.group.draw(self.screen)
 
 		def deposit_item(self):
 				if self.player.equipped_item:
