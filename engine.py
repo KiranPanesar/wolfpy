@@ -251,7 +251,7 @@ class GameEngine(object):
 							elif event.key == pygame.K_ESCAPE: # Quit to title
 								self.title_screen();
 							
-							# Move boat
+							# Move boat 
 							if self.boat.binding > 0:
 								position = self.boat.rect.centerx + self.boat.binding
 								if position	> 597:

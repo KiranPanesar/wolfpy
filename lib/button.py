@@ -5,6 +5,9 @@ class Create(pygame.Surface):
 
 		pygame.font.init()
 		# Create container border surface
+		self.colour = colour
+		self.width =  width
+		self.height	= height
 		self.renderSurface = surface
 		self.border = pygame.Surface((width,height))
 		self.border.fill((borderColour))
@@ -30,6 +33,19 @@ class Create(pygame.Surface):
 		textpos = text.get_rect()
 		textpos.centerx = width / 2
 		textpos.centery = height / 2
+
+		self.border.blit(text, textpos)
+		self.render = self.border
+		if render:
+			self.renderSurface.blit(self.border, self.borderRect)
+
+	def changeText(self, text, colour = 0, render=1):
+		if colour == 0:
+			colour = self.colour
+		text = font.render(text, 1, (colour))
+		textpos = text.get_rect()
+		textpos.centerx = self.width / 2
+		textpos.centery = self.height / 2
 
 		self.border.blit(text, textpos)
 		self.render = self.border
