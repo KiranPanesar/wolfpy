@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-# Created by Kiran Panesar and Dan Khoeler - 22/10/2013
+# Created by Kiran Panesar and Dan Koehler - 22/10/2013
 
 from Tkinter import *
 import sys, pygame
@@ -29,14 +29,11 @@ class GameEngine(object):
 				pygame.draw.rect(self.screen, green, (0, 379, 300, 100), 0)
 				pygame.draw.circle(self.screen, orange, (800, 100), 80, 0)
 				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
-				pygame.draw.rect(self.screen, (107,62,46), (380, 379, 100, 20), 0) # right shore
 
-				self.farmerGif = gifsprite.Create(['Farmer Walk Animation 01a.png', 'Farmer Walk Animation 02a.png'], 50, 300)
-				self.farmerGif.group.draw(self.screen)
 
 		def draw_characters(self):
-				self.player = character.Character("./img/farmer.bmp")
-				self.player.rect.top = 320
+				self.player = character.Character(gifsprite.Create(['Farmer01.png', 'Farmer02.png','Farmer03.png','Farmer04.png'], 75, 128))
+				self.player.game_image.rect.top = 260
 
 				self.cabbage = character.Character("./img/cabbage.bmp")
 				self.cabbage.rect.top = 320
@@ -56,6 +53,12 @@ class GameEngine(object):
 				self.sheep.positionLeft = 170
 				self.sheep.positionRight = 730
 
+				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 163, 90)
+				self.boat.rect.top = 330
+				self.boat.rect.left = 280
+				self.boat.positionLeft = 370
+				self.boat.positionRight = 730
+
 				self.left_shore_characters.append(self.cabbage)
 				self.left_shore_characters.append(self.wolf)
 				self.left_shore_characters.append(self.sheep)
@@ -63,19 +66,23 @@ class GameEngine(object):
 				self.refresh_characters()
 
 		def refresh_characters(self):
+				self.draw_background()
+				
 				if self.player.equipped_item:
-					self.player.equipped_item.rect.top  = self.player.rect.top-self.player.equipped_item.rect.height
-					self.player.equipped_item.rect.left = self.player.rect.left
+					self.player.equipped_item.rect.top  = self.player.game_image.rect.top-self.player.equipped_item.rect.height
+					self.player.equipped_item.rect.left = self.player.game_image.rect.left
 
-				self.screen.blit(self.player.game_image, self.player.rect)
+				self.player.game_image.group.draw(self.screen)
+				self.boat.group.draw(self.screen)
+
 				self.screen.blit(self.cabbage.game_image, self.cabbage.rect)
 				self.screen.blit(self.wolf.game_image, self.wolf.rect)
 				self.screen.blit(self.sheep.game_image, self.sheep.rect)
-				self.farmerGif.group.draw(self.screen)
+				
 
 		def deposit_item(self):
 				if self.player.equipped_item:
-						self.player.equipped_item.rect.bottom  = self.player.rect.bottom
+						self.player.equipped_item.rect.bottom  = self.player.game_image.rect.bottom
 						if self.player.equipped_item.rect.centerx > 450:
 							self.player.equipped_item.rect.right = self.player.equipped_item.positionRight
 						else:
@@ -106,14 +113,7 @@ class GameEngine(object):
 		def check_characters(self):
 				current_side = []
 
-				if self.player.rect.right > 380 and self.player.rect.left < 620:
-					# if self.player.rect.right > 380:
-					# 	current_side = self.left_shore_characters
-					# 	print "leaving left"
-					# elif self.player.rect.left < 620:
-					# 	current_side = self.right_shore_characters
-					# 	print "leaving right"
-
+				if self.player.game_image.rect.right > 380 and self.player.game_image.rect.left < 620:
 				# Check if the sheep has been left with the cabbage, or the wolf with the sheep
 					if len(self.right_shore_characters) > 1:
 						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters:
@@ -128,9 +128,9 @@ class GameEngine(object):
 
 		def get_item_clicked(self, position):
 				current_side = []
-				if self.player.rect.left >= 621:
+				if self.player.game_image.rect.left >= 621:
 					current_side = self.right_shore_characters
-				elif self.player.rect.right <= 379:
+				elif self.player.game_image.rect.right <= 379:
 					current_side = self.left_shore_characters
 				if self.cabbage.rect.collidepoint(position) and self.cabbage in current_side:
 					return self.cabbage
@@ -190,44 +190,55 @@ class GameEngine(object):
 		
 		def start_game(self):
 
-			self.draw_background()
 			self.draw_characters()
 			
 			clock = pygame.time.Clock()
-
+			time_elapsed_since_last_action = 0
 			while 1:
-					clock.tick(30)
-					self.farmerGif.update()
+					dt = clock.tick(30)
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()
-						elif event.type == pygame.KEYDOWN:
-							self.draw_background()                  
-							if event.key == pygame.K_RIGHT:
-								if self.player.rect.right <= 850:
-									self.player.rect = self.player.rect.move([50, 0])
+						elif event.type == pygame.KEYDOWN: # Check for keydown events       
+							if event.key == pygame.K_RIGHT: # Moving right
+								self.player.game_image.update()
+								self.player.game_image.setFlip(1)
+								if self.player.game_image.rect.right <= 850:
+									self.player.game_image.rect = self.player.game_image.rect.move([50, 0])
 									self.check_characters()
-								elif self.player.rect.right != 900:
-									self.player.rect = self.player.rect.move([900 - self.player.rect.right, 0])
+								elif self.player.game_image.rect.right != 900:
+									self.player.game_image.rect = self.player.game_image.rect.move([900 - self.player.game_image.rect.right, 0])
 									self.check_characters()
-							elif event.key == pygame.K_LEFT:
-								if self.player.rect.left >= 50:
-									self.player.rect = self.player.rect.move([-50,0])
+							elif event.key == pygame.K_LEFT: # Moving left
+								self.player.game_image.update()
+								self.player.game_image.setFlip(0)
+								if self.player.game_image.rect.left >= 50:
+									self.player.game_image.rect = self.player.game_image.rect.move([-50,0])
 									self.check_characters()
-							elif event.key == pygame.K_ESCAPE:
+								elif self.player.game_image.rect.left != 0:
+									self.player.game_image.rect = self.player.game_image.rect.move([0 - self.player.game_image.rect.left, 0])
+									self.check_characters()
+							elif event.key == pygame.K_ESCAPE: # Quit to title
 								self.title_screen();
-						elif event.type == pygame.MOUSEBUTTONUP:
-							self.draw_background()
+							self.refresh_characters()
+						elif event.type == pygame.MOUSEBUTTONUP: # Mouse event
 							if self.player.equipped_item:     
 								self.deposit_item()
 							else:
-								if self.get_item_clicked(pygame.mouse.get_pos()):								
+								if self.get_item_clicked(pygame.mouse.get_pos()): # Check which item was clicked								
 									self.player.equip_item(self.get_item_clicked(pygame.mouse.get_pos()))
 									if self.player.equipped_item in self.left_shore_characters:
 										self.left_shore_characters.remove(self.player.equipped_item)
 									if self.player.equipped_item in self.right_shore_characters:
 										self.right_shore_characters.remove(self.player.equipped_item)
-					self.refresh_characters()
+							self.refresh_characters()
+					
+					#boat update check
+					# time_elapsed_since_last_action += dt
+					# if time_elapsed_since_last_action > 500:
+					# 	self.boat.update()
+					# 	time_elapsed_since_last_action = 0
+					# 	self.refresh_characters()
 					pygame.display.flip()
 
 		def share_score(self):
@@ -241,12 +252,12 @@ class GameEngine(object):
 			e.insert(0,"I just completed River Crossing Game in 23 seconds!")
 
 			def callback_block():
-			    print e.get()
-			    if len(e.get()) > 0:
-			    	fb_request_manager = fbrequest.FBRequestManager("CAAJH14AVcDEBAIRjloeHaGqtJrzCr5jsSIiUNfuML6FASAZAFyAmdF2xumvszd3Vku9xnrn0pWKhxxuAZBVYecvxXLBZCJrVkPJaioWvP3gHETjlzpK6uuNyD5DrDYU3KFGBNBU6UqbMBwdo3zJSY3qvLHhhSEZD")
-			    	fb_request_manager.fb_post_message(e.get())
-			    	pass
-			    master.destroy()
+				print e.get()
+				if len(e.get()) > 0:
+					fb_request_manager = fbrequest.FBRequestManager("CAAJH14AVcDEBAIRjloeHaGqtJrzCr5jsSIiUNfuML6FASAZAFyAmdF2xumvszd3Vku9xnrn0pWKhxxuAZBVYecvxXLBZCJrVkPJaioWvP3gHETjlzpK6uuNyD5DrDYU3KFGBNBU6UqbMBwdo3zJSY3qvLHhhSEZD")
+					fb_request_manager.fb_post_message(e.get())
+					pass
+				master.destroy()
 
 			b = Button(master, text="Share!", width=10, command=callback_block)
 			b.pack()
