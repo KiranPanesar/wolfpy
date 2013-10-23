@@ -57,11 +57,18 @@ class FBOAuthManager(object):
 		b.pack()
 
 		mainloop()
+
 	def load_and_check_access_token(self):
-		if self.access_token_expirery_epoch <= time.time():
+		if self.has_access_token_expired():
 			self.fb_authenticate_user()
 		else:
 			self.load_access_token()
+	
+	def has_access_token_expired(self):
+		return access_token_expirery_epoch <= time.time()
+
+	def is_user_logged_in():
+		return self.access_token != None or self.has_access_token_expired()
 
 	def load_access_token(self):
 		with open('./fblib/token_data.csv', 'rb') as csvfile:
