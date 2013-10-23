@@ -2,6 +2,7 @@ import sys, pygame
 import lib.button as button
 import main_menu
 import fblib.fbrequest as fbrequest
+import lib.message_popup as message_popup
 
 class GameCompletedScreen(object):
 	"""docstring for GameCompletedScreen"""
@@ -35,9 +36,21 @@ class GameCompletedScreen(object):
 						menu.show_screen()
 					elif share_button.rect.collidepoint(pos):
 						print "share button clicked"
-						self.fb_manager.fb_post_message("I've just completed River Crossing Adventure in "+ str(self.time_taken) + " seconds!")
+						self.share_score()
 
 			pygame.display.flip()
 
 	def share_score(self):
-		pass
+		share_message = "I've just completed River Crossing Adventure in "+ str(self.time_taken) + " seconds!"
+
+		def callback():
+			response = self.fb_manager.fb_post_message(share_message)
+			if type(response) is fbrequest.FBError:
+				error_popup = message_popup.MessagePopUp("Could Not Share - An Error Occurred", response.error_message, "Dismiss")
+				error_popup.show()
+			else:
+				success_popup = message_popup.MessagePopUp("Post Successfully Shared!", "Your message has been shared to Facebook!", "Dismiss")
+				success_popup.show()
+
+		confirm_share = message_popup.MessagePopUp("Sharing To Facebook", "Message to be shared: \n"+share_message, "Publish!", callback)
+		confirm_share.show()
