@@ -28,58 +28,51 @@ class GameEngine(object):
 				self.game_start_time = time.time()
 
 		def draw_background(self):
-				# blue = 52, 152, 219
-				# self.screen.fill(blue)
+				self.river = gifsprite.Create(['River 1.png', 'River 1a.png'], 300, 400)
+				self.background = pygame.image.load('./img/Background.png').convert_alpha()
+				self.left_bank = pygame.image.load('./img/Bank Left.png').convert_alpha()
+				self.right_bank = pygame.image.load('./img/Bank Right.png').convert_alpha()
 
-				background = pygame.image.load('./img/Background.png').convert_alpha()
-				left_bank = pygame.image.load('./img/Bank Left.png').convert_alpha()
-				right_bank = pygame.image.load('./img/Bank Right.png').convert_alpha()
-				self.screen.blit(background, (0, 0))
-				self.screen.blit(left_bank, (0, 380))
-				self.screen.blit(right_bank, (620, 380))
+		def refresh_background(self):
+				self.screen.blit(self.background, (0, 0)) # Draw First!
+				self.screen.blit(self.left_bank, (0, 380))
+				self.screen.blit(self.right_bank, (600, 380))
+				self.river.group.draw(self.screen)
 
 		def clock_ticked(self):
 			self.draw_clock()
+			self.river.update()
+			self.river.group.draw(self.screen)
 			
 		def draw_clock(self):
 			game_time = int(time.time() - self.game_start_time)
-
 			label = pygame.font.Font(None, 25).render(str(game_time)+" seconds", 1, (236, 240, 241))
-
-			pygame.draw.rect(self.screen, (52, 152, 219), (15, 5, 100, 50), 0)
-			self.screen.blit(label, (15, 5))
+			labelPos = label.get_rect()
+			labelPos.top = 10
+			labelPos.left = 10
+			self.screen.blit(self.background,labelPos,labelPos)
+			self.screen.blit(label, labelPos)
 
 			# pygame.display.flip()
 
 		def draw_characters(self):
-				self.player = character.Character(gifsprite.Create(['Farmer01.png', 'Farmer02.png','Farmer03.png','Farmer04.png'], 75, 128))
-				self.player.game_image.rect.top = 265
-				self.player.game_image.rect.left = 10
+				self.player = character.Character(gifsprite.Create(['Farmer01.png', 'Farmer02.png','Farmer03.png','Farmer04.png'], 10, 265))
 				self.player.direction = 0
 				self.player.step_interval = 50
 
-				self.cabbage = character.Character(gifsprite.Create(['Cabbage01.png', 'Cabbage02.png','Cabbage03.png','Cabbage04.png'], 123, 100))
-				self.cabbage.game_image.rect.top = 290
-				self.cabbage.game_image.rect.left = 60
+				self.cabbage = character.Character(gifsprite.Create(['Cabbage01.png', 'Cabbage02.png','Cabbage03.png','Cabbage04.png'], 60, 290))
 				self.cabbage.positionLeft = 50
 				self.cabbage.positionRight = 850
 
-				self.wolf = character.Character(gifsprite.Create(['Wolf01.png', 'Wolf02.png','Wolf03.png'], 64, 40))
-				self.wolf.game_image.rect.top = 350
-				self.wolf.game_image.rect.left = 200
-
+				self.wolf = character.Character(gifsprite.Create(['Wolf01.png', 'Wolf02.png','Wolf03.png'], 200, 350))
 				self.wolf.positionLeft = 200
 				self.wolf.positionRight = 790
 
-				self.sheep = character.Character(gifsprite.Create(['Sheep01.png', 'Sheep02.png'], 40, 40))
-				self.sheep.game_image.rect.top = 350
-				self.sheep.game_image.rect.left = 170
-
+				self.sheep = character.Character(gifsprite.Create(['Sheep01.png', 'Sheep02.png'], 170, 350))
 				self.sheep.positionLeft = 170
 				self.sheep.positionRight = 730
 
-				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 163, 90)
-				self.boat.rect.top = 325
+				self.boat = gifsprite.Create(['Boat-02a.png', 'Boat-03a.png'], 0, 325)
 				self.boat.rect.centerx = 325
 				self.boat.binding = 0
 
@@ -101,7 +94,7 @@ class GameEngine(object):
 					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx + 50
 
 		def refresh_characters(self):
-				self.draw_background()
+				self.refresh_background()
 				self.clock_ticked()
 
 				if self.player.equipped_item:
@@ -112,10 +105,8 @@ class GameEngine(object):
 						self.player.equipped_item.game_image.rect.left = self.player.game_image.rect.right
 
 				self.player.game_image.group.draw(self.screen)
-				
 				self.cabbage.game_image.group.draw(self.screen)
 				self.wolf.game_image.group.draw(self.screen)
-
 				self.sheep.game_image.group.draw(self.screen)
 				self.boat.group.draw(self.screen)# Draw Last!
 
@@ -137,9 +128,9 @@ class GameEngine(object):
 
 						# Check which shore the item is on and add it
 						current_side = []
-						if self.player.equipped_item.game_image.rect.left >= 621:
+						if self.player.equipped_item.game_image.rect.left >= 601:
 							current_side = self.right_shore_characters
-						elif self.player.equipped_item.game_image.rect.right <= 379:
+						elif self.player.equipped_item.game_image.rect.right <= 299:
 							current_side = self.left_shore_characters
 
 						current_side.append(self.player.equipped_item)
@@ -153,11 +144,11 @@ class GameEngine(object):
 		def check_characters(self):
 				current_side = []
 
-				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 620: # Keep, change values later for boat docking
+				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 600: # Keep, change values later for boat docking
 					self.player.game_image.setImage(0)
 					self.boat_binding();
 
-				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 620:
+				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 600:
 					# Check if the sheep has been left with the cabbage, or the wolf with the sheep
 					if len(self.right_shore_characters) > 1:
 						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters:
@@ -183,9 +174,9 @@ class GameEngine(object):
 
 		def get_item_clicked(self, position):
 				current_side = []
-				if self.player.game_image.rect.left >= 621:
+				if self.player.game_image.rect.left >= 601:
 					current_side = self.right_shore_characters
-				elif self.player.game_image.rect.right <= 379:
+				elif self.player.game_image.rect.right <= 299:
 					current_side = self.left_shore_characters
 				if self.cabbage.rect.collidepoint(position) and self.cabbage in current_side:
 					return self.cabbage
@@ -203,7 +194,7 @@ class GameEngine(object):
 			settings_page.show_screen()
 
 		def start_game(self):
-
+			self.draw_background()
 			self.draw_characters()
 			
 			# scheduler = sched.scheduler(time.time, time.sleep)
@@ -265,7 +256,7 @@ class GameEngine(object):
 										self.right_shore_characters.remove(self.player.equipped_item)
 							self.refresh_characters()
 					
-					#boat update check
+					#Timer Function
 					time_elapsed_since_last_action += dt
 					if time_elapsed_since_last_action > 1000:
 						self.boat.update()
