@@ -39,7 +39,7 @@ class FBOAuthManager(object):
 			log_in()
 			
 		def log_in():
-			webbrowser.get('windows-default').open(urlString)
+			webbrowser.get.open(urlString)
 
 			master = Tk()
 			master.title("Sign Into Facebook")
