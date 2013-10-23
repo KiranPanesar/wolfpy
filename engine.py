@@ -31,8 +31,8 @@ class GameEngine(object):
 				pygame.draw.rect(self.screen, green, (621, 379, 300, 100), 0) # right shore
 				pygame.draw.rect(self.screen, (107,62,46), (380, 379, 100, 20), 0) # right shore
 
-				# farmerGif = gifsprite.Create(['Farmer Walk Animation 01a.png', 'Farmer Walk Animation 02a.png'], 50, 300)
-				# farmerGif.group.draw(screen)
+				self.farmerGif = gifsprite.Create(['Farmer Walk Animation 01a.png', 'Farmer Walk Animation 02a.png'], 50, 300)
+				self.farmerGif.group.draw(self.screen)
 
 		def draw_characters(self):
 				self.player = character.Character("./img/farmer.bmp")
@@ -71,6 +71,7 @@ class GameEngine(object):
 				self.screen.blit(self.cabbage.game_image, self.cabbage.rect)
 				self.screen.blit(self.wolf.game_image, self.wolf.rect)
 				self.screen.blit(self.sheep.game_image, self.sheep.rect)
+				self.farmerGif.group.draw(self.screen)
 
 		def deposit_item(self):
 				if self.player.equipped_item:
@@ -196,6 +197,7 @@ class GameEngine(object):
 
 			while 1:
 					clock.tick(30)
+					self.farmerGif.update()
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()

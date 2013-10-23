@@ -31,7 +31,7 @@ class Create(pygame.sprite.Sprite):
 
 
 	def load_image(self,name):
-	    fullname = os.path.join('data', name)
+	    fullname = os.path.join('img', name)
 	    # Still slightly unsure of try-excpection statments, thought implimenting one here might be useful for null resources in terms of debugging Tuesday.
 	    try:
 	        image = pygame.image.load(fullname)
@@ -39,7 +39,8 @@ class Create(pygame.sprite.Sprite):
 	        print 'Cannot load image:', name
 	        raise SystemExit, message
 	    image = image.convert()
-	    return image, image.get_rect()
+	    return image
+
 	def postion(self, left, top, flip):
 		self.flip = flip
 		if self.flip == 0:
