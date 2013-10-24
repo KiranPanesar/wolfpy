@@ -29,6 +29,7 @@ class GameEngine(object):
 				self.right_shore_characters = []
 				self.sound = True
 				self.game_start_time = time.time()
+				self.key_held = 0 # 0 if no key, 1 if right, -1 is left
 
 		def draw_background(self):
 				self.cloud = pygame.image.load('./img/Cloud.png').convert_alpha()
@@ -89,17 +90,6 @@ class GameEngine(object):
 
 				self.refresh_characters()
 
-		def boat_binding(self):
-			# only called when player on water
-			if self.player.direction: #going right
-				self.boat.setFlip(0)
-				if self.player.game_image.rect.centerx > self.boat.rect.centerx + 50:
-					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx - 50
-			else: #Going left
-				self.boat.setFlip(1)
-				if self.player.game_image.rect.centerx < self.boat.rect.centerx - 50:
-					self.boat.binding = self.player.game_image.rect.centerx - self.boat.rect.centerx + 50
-
 		def refresh_characters(self,call_clock = 1):
 				self.refresh_background()
 				self.draw_clock()
@@ -150,10 +140,6 @@ class GameEngine(object):
 				if len(self.right_shore_characters) == 3:
 					complete_screen = game_complete.GameCompletedScreen(self.screen, int(time.time()-self.game_start_time))
 					complete_screen.show_screen()
-
-				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 600: # Keep, change values later for boat docking
-					self.player.game_image.setImage(0)
-					self.boat_binding();
 
 				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 600:
 					# Check if the sheep has been left with the cabbage, or the wolf with the sheep
@@ -217,46 +203,19 @@ class GameEngine(object):
 			clock = pygame.time.Clock()
 			time_elapsed_since_last_action = 0
 			while 1:
-					dt = clock.tick(30)
+					dt = clock.tick(10)						
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
 							sys.exit()
 						elif event.type == pygame.KEYDOWN: # Check for keydown events   
-							self.boat.binding = 0    
 							if event.key == pygame.K_RIGHT: # Moving right
-								self.player.direction = 1
-								self.player.game_image.update()
-								self.player.game_image.setFlip(1)
-								if self.player.equipped_item:
-									self.player.equipped_item.game_image.update()
-									self.player.equipped_item.game_image.setFlip(1)
-								if self.player.game_image.rect.right <= 850:
-									self.player.game_image.rect = self.player.game_image.rect.move([self.player.step_interval, 0])
-									self.check_characters()
+								self.key_held = 1
 							elif event.key == pygame.K_LEFT: # Moving left
-								self.player.direction = 0
-								self.player.game_image.update()
-								self.player.game_image.setFlip(0)
-								if self.player.equipped_item:
-									self.player.equipped_item.game_image.update()
-									self.player.equipped_item.game_image.setFlip(0)
-								if self.player.game_image.rect.left >= self.player.step_interval:
-									self.player.game_image.rect = self.player.game_image.rect.move([-(self.player.step_interval),0])
-									self.check_characters()
+								self.key_held = -1
 							elif event.key == pygame.K_ESCAPE: # Quit to title
 								self.title_screen();
-							
-							# Move boat 
-							if self.boat.binding > 0:
-								position = self.boat.rect.centerx + self.boat.binding
-								self.boat.rect.centerx = position
-								self.player.game_image.setImage(0)
-							elif self.boat.binding < 0:
-								position = self.boat.rect.centerx + self.boat.binding
-								self.boat.rect.centerx = position
-								self.player.game_image.setImage(0)
-							self.refresh_characters()
-								
+						elif event.type == pygame.KEYUP:
+							self.key_held = 0							
 						elif event.type == pygame.MOUSEBUTTONUP: # Mouse event
 							if self.player.equipped_item:     
 								self.deposit_item()
@@ -269,11 +228,50 @@ class GameEngine(object):
 										self.right_shore_characters.remove(self.player.equipped_item)
 							self.refresh_characters()
 					
+					if self.key_held == 1 or self.key_held == -1:
+						if self.key_held == 1:
+							self.player.direction = 1
+							self.player.game_image.setFlip(1)
+							if self.player.equipped_item:
+								self.player.equipped_item.game_image.update()
+								self.player.equipped_item.game_image.setFlip(1)
+							if self.player.game_image.rect.right <= 850:
+								self.player.game_image.rect = self.player.game_image.rect.move([self.player.step_interval, 0])
+						else:
+							self.player.direction = 0
+							self.player.game_image.setFlip(0)
+							if self.player.equipped_item:
+								self.player.equipped_item.game_image.update()
+								self.player.equipped_item.game_image.setFlip(0)
+							if self.player.game_image.rect.left >= 50:
+								self.player.game_image.rect = self.player.game_image.rect.move([-self.player.step_interval, 0])
+						self.player.game_image.update()
+
+						# Move boat 							
+						if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 600: # Keep, change values later for boat docking						
+							if self.player.direction: #going right
+								self.boat.setFlip(0)
+								if self.player.game_image.rect.centerx > self.boat.rect.centerx + 50:
+									self.boat.rect.centerx = self.player.game_image.rect.centerx - 50
+									self.player.game_image.setImage(0)
+									if self.player.equipped_item:
+										self.player.equipped_item.game_image.setImage(0)
+							else: #Going left
+								self.boat.setFlip(1)
+								if self.player.game_image.rect.centerx < self.boat.rect.centerx:
+									self.boat.rect.centerx = self.player.game_image.rect.centerx + 50
+									self.player.game_image.setImage(0)
+									if self.player.equipped_item:
+										self.player.equipped_item.game_image.setImage(0)
+
+						self.check_characters()
+						self.refresh_characters()
+
 					#Timer Function
 					time_elapsed_since_last_action += dt
 									
 					if time_elapsed_since_last_action > 1000:
-						self.boat.update()
+						# self.boat.update()
 						time_elapsed_since_last_action = 0
 						self.clock_ticked()
 					pygame.display.flip()
