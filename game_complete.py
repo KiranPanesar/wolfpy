@@ -18,6 +18,14 @@ class GameCompletedScreen(object):
 		background_surface.fill((255,255,255))           
 		self.screen.blit(background_surface, (0,0)) 
 		
+		image_file_string = None
+		image_file_string = "./img/Win.png"
+
+		image = pygame.image.load(image_file_string).convert_alpha()
+		image_rect = image.get_rect()
+
+		self.screen.blit(image, image_rect)		
+
 		share_button	  	=  button.Create(self.screen,(0,210,255), None, 200, "Share Score", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 		main_menu_button 	=  button.Create(self.screen,(0,210,255), None, 270, "Main Menu", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 
