@@ -25,7 +25,7 @@ class MainMenuScreen(object):
 		# popup = alert_view.AlertView(self.screen, callback, "",  "","Got It", "Line 1", "Line 2", "Line 3", "Line 4") #backing_screen, popup_title = "", popup_message = "", action_button_title, button_callback, msg_1 = "", msg_2 = "", msg_3 = "", msg_3 = ""
 		# popup.show_popup()
 
-		# pygame.display.flip()
+		pygame.display.flip()
 
 		while 1:
 			for event in pygame.event.get():
