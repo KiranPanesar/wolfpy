@@ -26,11 +26,8 @@ class GameCompletedScreen(object):
 
 		self.screen.blit(image, image_rect)		
 
-		share_button	  	=  button.Create(self.screen,(0,210,255), None, 200, "Share Score", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
-		main_menu_button 	=  button.Create(self.screen,(0,210,255), None, 270, "Main Menu", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
-
-		self.screen.blit(share_button.render,share_button.rect)
-		self.screen.blit(main_menu_button.render,main_menu_button.rect)
+		share_button	  	=  button.Create(self.screen,(0,210,255), None, 200, "Share Score", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
+		main_menu_button 	=  button.Create(self.screen,(0,210,255), None, 270, "Main Menu", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
 
 		while 1:
 			for event in pygame.event.get():
