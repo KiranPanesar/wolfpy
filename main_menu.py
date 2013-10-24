@@ -10,9 +10,11 @@ class MainMenuScreen(object):
 		super(MainMenuScreen, self).__init__()
 		self.screen = screen
 		self.background = pygame.image.load('./img/Background.png').convert_alpha()
+		self.backgroundOverlay = pygame.image.load('./img/Title-Screen.png').convert_alpha()
 
 	def show_screen(self):
 		self.screen.blit(self.background, (0, 0)) # Draw First!
+		self.screen.blit(self.backgroundOverlay, (0, 0)) # Draw First!
 		startBtn = lib.button.Create(self.screen,(0,210,255), None, 180, "Start Game", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
 		settingBtn = lib.button.Create(self.screen,(0,210,255), None, 250, "Settings", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
 		info_button = lib.button.Create(self.screen,(0,210,255), None, 320, "How To Play", 300, 50, (255,255,255), 32, 2,(10,10,10),1);

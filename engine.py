@@ -21,7 +21,9 @@ class GameEngine(object):
 				
 				if screen == None:
 					screen = pygame.display.set_mode((900,480))
-				
+					pygame.mixer.init()
+					sounda= pygame.mixer.Sound("./sounds/background.wav")
+					sounda.play()
 				self.screen = screen
 				self.left_shore_characters = []
 				self.right_shore_characters = []
@@ -116,13 +118,10 @@ class GameEngine(object):
 
 		def deposit_item(self):
 				if self.player.equipped_item:
-						self.player.equipped_item.game_image.rect.bottom  = self.player.game_image.rect.bottom
-						# if self.player.equipped_item.game_image.rect.centerx > 450:
-						# 	self.player.equipped_item.game_image.rect.right = self.player.equipped_item.positionRight
-						# 	print self.player.equipped_item.game_image.rect.top
-						# else:
-						# 	self.player.equipped_item.game_image.rect.left = self.player.equipped_item.positionLeft
-						# 	print self.player.equipped_item.game_image.rect.top
+						if self.player.direction == 0:
+							self.player.equipped_item.game_image.rect.right += 10
+						else:
+							self.player.equipped_item.game_image.rect.right -= 10
 						self.player.equipped_item.game_image.group.draw(self.screen)
 						# self.screen.blit(, self.player.equipped_item.game_image.rect)
 						
@@ -191,12 +190,14 @@ class GameEngine(object):
 					current_side = self.right_shore_characters
 				elif self.player.game_image.rect.right <= 299:
 					current_side = self.left_shore_characters
-				if self.cabbage.rect.collidepoint(position) and self.cabbage in current_side:
-					return self.cabbage
+				if self.sheep.rect.collidepoint(position) and self.sheep in current_side:
+					return self.sheep
 				elif self.wolf.rect.collidepoint(position) and self.wolf in current_side:
 					return self.wolf
-				elif self.sheep.rect.collidepoint(position) and self.sheep in current_side:
-					return self.sheep
+				elif self.cabbage.rect.collidepoint(position) and self.cabbage in current_side:
+					return self.cabbage
+				
+				
 
 		def title_screen(self):
 			main_screen = main_menu.MainMenuScreen(self.screen)
