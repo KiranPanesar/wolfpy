@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Sign In</title>
+    <style type="text/css">
+    	#wrap {
+    		width:660px;
+    		margin:0 auto;
+    	}
+
+		h2 {
+			font-family: 'Lato', Arial;
+	                font-weight: 700;
+			color: #99D3F2;
+			text-shadow: 2px 2px #2F6080;
+			text-align: center;
+		}
+		p {
+			text-align: center;
+			font-family: 'Lato', Arial;
+		}
+		
+		#link, #clipboard {
+			width: 330px;
+			float: left;
+			height: 30px;
+			margin: 20px 0;
+			margin-right: 0;
+			padding: 0px;
+			line-height: 30px;
+			border: 1px solid #1D4A8D;
+		}
+
+		#clipboard {
+			width: 150px;
+			text-align: center;
+			height: 32px;
+			margin-left: 0;
+		}
+
+		#link {
+			text-indent: 10px;
+			border-right: 0;
+		}
+
+		#wrap-button {
+			width: 482px;
+			margin: 0 auto;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function (){
+			document.getElementById('link').value = window.location.href;	
+			document.getElementById('clipboard').addEventListener('click', function (event){
+				event.returnValue = false;
+				event.stopPropagation();
+				window.clipboardData.setData('Text', document.getElementById('link').value);
+			}, false);
+		}
+	</script>
+</head>
+
+<body>
+	<div id="wrap">
+
+		<h2>Copy and paste the following URL back into the game:</h2>
+		<div id="wrap-button">
+			<input type="textbox" id="link" value="You must enable JavaScript">
+			<button id="clipboard">Copy to Clipboard</button>
+		</div>
+ 	</div>
+</body>
+</html>
