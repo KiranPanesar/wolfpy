@@ -117,7 +117,7 @@ class GameEngine(object):
 				self.boat.group.draw(self.screen)# Draw Last!
 
 		def deposit_item(self):
-				if self.player.equipped_item:
+				if self.player.equipped_item and (self.player.equipped_item.game_image.rect.right < 290 or self.player.equipped_item.game_image.rect.left > 610):
 						if self.player.direction == 0:
 							self.player.equipped_item.game_image.rect.right += 10
 						else:
@@ -133,24 +133,23 @@ class GameEngine(object):
 
 						# Check which shore the item is on and add it
 						current_side = []
-						if self.player.equipped_item.game_image.rect.left >= 601:
+						if self.player.equipped_item.game_image.rect.left >= 621:
 							current_side = self.right_shore_characters
-						elif self.player.equipped_item.game_image.rect.right <= 299:
+						elif self.player.equipped_item.game_image.rect.right <= 279:
 							current_side = self.left_shore_characters
 
 						current_side.append(self.player.equipped_item)
 
 						self.player.deposit_item()
 						self.refresh_characters()
-						# Check if all the characters are on the right side
-						if self.cabbage in self.right_shore_characters and self.sheep in self.right_shore_characters and self.wolf in self.right_shore_characters:
-							complete_screen = game_complete.GameCompletedScreen(self.screen, int(time.time()-self.game_start_time))
-							complete_screen.show_screen()
-						pass
-				pass
+				self.check_characters()
 
 		def check_characters(self):
 				current_side = []
+				# Check if all the characters are on the right side
+				if len(self.right_shore_characters) == 3:
+					complete_screen = game_complete.GameCompletedScreen(self.screen, int(time.time()-self.game_start_time))
+					complete_screen.show_screen()
 
 				if self.player.game_image.rect.right > 300 and self.player.game_image.rect.left < 600: # Keep, change values later for boat docking
 					self.player.game_image.setImage(0)
