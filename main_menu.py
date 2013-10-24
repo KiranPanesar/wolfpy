@@ -3,6 +3,7 @@ import lib.button
 import engine
 import settings
 import lib.message_popup as message_popup
+import lib.alert_view as alert_view
 
 class MainMenuScreen(object):
 	"""docstring for MainMenuScreen"""
@@ -18,8 +19,13 @@ class MainMenuScreen(object):
 		startBtn = lib.button.Create(self.screen,(0,210,255), None, 180, "Start Game", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
 		settingBtn = lib.button.Create(self.screen,(0,210,255), None, 250, "Settings", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
 		info_button = lib.button.Create(self.screen,(0,210,255), None, 320, "How To Play", 300, 50, (255,255,255), 32, 2,(10,10,10),1);
+		
+		# def callback():
+		# 	print "CallBack"
+		# popup = alert_view.AlertView(self.screen, callback, "",  "","Got It", "Line 1", "Line 2", "Line 3", "Line 4") #backing_screen, popup_title = "", popup_message = "", action_button_title, button_callback, msg_1 = "", msg_2 = "", msg_3 = "", msg_3 = ""
+		# popup.show_popup()
 
-		pygame.display.flip()
+		# pygame.display.flip()
 
 		while 1:
 			for event in pygame.event.get():
