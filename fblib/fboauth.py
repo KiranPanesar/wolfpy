@@ -6,6 +6,7 @@
 import webbrowser
 import csv
 import time
+import os
 
 from Tkinter import *
 
@@ -30,7 +31,7 @@ class FBOAuthManager(object):
 		if redirect_uri == None:
 			redirect_uri = self.redirect_uri
 
-		urlString = "https://www.facebook.com/dialog/oauth?client_id="+client_id+"&redirect_uri="+redirect_uri+"&response_type=token&scope=publish_actions"
+		url_string = "https://www.facebook.com/dialog/oauth?client_id="+client_id+"&redirect_uri="+redirect_uri+"&response_type=token&scope=publish_actions"
 
 		master = Tk()
 
@@ -39,7 +40,15 @@ class FBOAuthManager(object):
 			log_in()
 			
 		def log_in():
-			webbrowser.open(urlString)
+			# University computers only allow apps to open in IE.
+			# So check if IE exists and open in that, if it doesn't, open in default.
+			if os.path.isfile('c:\program files\internet explorer\iexplore.exe'):
+				print "IE"
+				browser = webbrowser.get('c:\program files\internet explorer\iexplore.exe')
+				browser.open(url_string)
+			else:
+				print "custom"
+				webbrowser.open(url_string)
 
 			master = Tk()
 			master.title("Sign Into Facebook")
