@@ -5,5 +5,6 @@
 
 import engine
 
+# Load the engine instance and show it
 engine = engine.GameEngine(None)
 engine.title_screen()

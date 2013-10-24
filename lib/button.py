@@ -1,7 +1,14 @@
 import pygame
 
 class Create(pygame.Surface):
+	'''
+		Class to easily create a pygame button
+	'''
+	
+	# Initialise button with various properties
 	def __init__(self, surface, background, x,y, text, width, height, colour, fontSize, border, borderColour, render):
+		
+		# Set all properties to None
 		self.surface = None
 		self.background = None	
 		self.x = None
@@ -14,12 +21,18 @@ class Create(pygame.Surface):
 		self.border = None
 		self.borderColour = None
 		self.rect = None
+
+		# Update properties to their real values
 		self.changeProperty(surface, background, x,y, text, width, height, colour, fontSize, border, borderColour)
+		
+		# 'render' parameter specifies whether the button should be automatically rendered
+		# If render = 1, render the button
 		if render:
 			self.renderSelf()
-		# Create container border surface
 		
+	# Used to update the properties
 	def changeProperty(self, surface = None, background= None, x= None,y= None, text= None, width= None, height= None, colour= None, fontSize= None, border= None, borderColour= None):
+		# Checks if each param is None before updating
 		if surface != None:
 			self.surface = surface
 		if background != None:
@@ -43,37 +56,56 @@ class Create(pygame.Surface):
 		if borderColour != None:
 			self.borderColour = borderColour
 
+	# Change the text of the button
 	def change_text(self, text):
 		self.text = text
 		self.renderSelf()
 
+	# Used to draw the button on the screen
 	def renderSelf(self):
+		# Initialise font
 		pygame.font.init()
+
+		# Draw border for button on screen
 		border_surface = pygame.Surface((self.width,self.height))
 		border_surface.fill((self.borderColour))
 		border_surface_rect = border_surface.get_rect()
+		
+		# If an x-coordinate has been specified, set it
+		# else center button
 		if self.x != None:
 			border_surface_rect.left = self.x
 		else:
 			border_surface_rect.centerx = self.surface.get_rect().centerx
+		
+		# Set button's start y-coordinate
 		border_surface_rect.top = self.y
+		
 		# Create container border surface
 		render = pygame.Surface((self.width -(self.border * 2),self.height -(self.border * 2)))
 		render.fill((self.background))
 
+		# Set up button's main frame
 		self.rect =  render.get_rect()
 		self.rect.top = self.border
 		self.rect.left = self.border
-		# Let's blit these two!
+
+		# Blit background to screen
 		border_surface.blit(render, self.rect)
 		self.rect = border_surface_rect
+		
+		# Set up font
 		self.font = pygame.font.Font(None, self.fontSize)
 		
+		# Create text label
 		text = self.font.render(self.text, 1, (self.colour))
 		textpos = text.get_rect()
 		textpos.centerx = self.width / 2
 		textpos.centery = self.height / 2
 		
+		# Blit text label to border
 		border_surface.blit(text, textpos)
 		self.render = border_surface
+
+		# Blit the final button to screen
 		self.surface.blit(border_surface, border_surface_rect)
