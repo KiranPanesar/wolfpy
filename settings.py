@@ -15,18 +15,20 @@ class SettingsScreen(object):
 		self.background = pygame.image.load('./img/Background.png').convert_alpha()
 		self.screen.blit(self.background, (0,0))
 		backBtn =  lib.button.Create(self.screen,(0,210,255), 20, 20, "Back", 60, 30, (255,255,255), 24, 2,(10,10,10),1)
-		soundBtnOn =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (On)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
-		soundBtnOff =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (Off)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
+		soundBtn =  lib.button.Create(self.screen,(0,210,255), None, 180, "Toggle Sound (On)", 300, 50, (255,255,255), 32, 2,(10,10,10),0)
 		self.fb_toggle_button =  lib.button.Create(self.screen,(0,210,255), None, 250, "Facebook Log In", 300, 50, (255,255,255), 32, 2,(10,10,10),1)
 
 		if self.fb_manager.fb_is_user_authd():
 			print self.fb_manager.fb_oauth_manager
 			self.fb_toggle_button.change_text("Log Out")
 		
-		if self.sound:
-			self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
+		if pygame.mixer.music.get_busy():
+			soundBtn.change_text("Toggle Sound (On)")
 		else:
-			self.screen.blit(soundBtnOff.render,soundBtnOff.rect)
+			soundBtn.change_text("Toggle Sound (Off)")	
+
+		sound_rect = soundBtn.rect
+
 		while 1:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -35,14 +37,15 @@ class SettingsScreen(object):
 					pos = pygame.mouse.get_pos()
 					if backBtn.rect.collidepoint(pos):
 						self.title_screen()
-					elif soundBtnOn.rect.collidepoint(pos): # Cords Same
-						print "sound button"
+					elif sound_rect.collidepoint(pos): # Cords Same
 						if self.sound == 1:
 							self.sound = 0
-							self.screen.blit(soundBtnOff.render,soundBtnOff.rect)
+							pygame.mixer.music.stop()
+							soundBtn.change_text("Toggle Sound (Off)")	
 						else: 
 							self.sound = 1
-							self.screen.blit(soundBtnOn.render,soundBtnOn.rect)
+							pygame.mixer.music.play(-1)
+							soundBtn.change_text("Toggle Sound (On)")	
 					elif self.fb_toggle_button.rect.collidepoint(pos):
 						self.toggle_user_login()
 			pygame.display.flip()

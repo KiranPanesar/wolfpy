@@ -22,8 +22,8 @@ class GameEngine(object):
 				if screen == None:
 					screen = pygame.display.set_mode((900,480))
 					pygame.mixer.init()
-					sounda= pygame.mixer.Sound("./sounds/background.wav")
-					sounda.play()
+					pygame.mixer.music.load("./sounds/background.wav")
+					pygame.mixer.music.play(-1)
 				self.screen = screen
 				self.left_shore_characters = []
 				self.right_shore_characters = []
