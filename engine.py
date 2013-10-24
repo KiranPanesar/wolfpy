@@ -133,9 +133,9 @@ class GameEngine(object):
 
 						# Check which shore the item is on and add it
 						current_side = []
-						if self.player.equipped_item.game_image.rect.left >= 621:
+						if self.player.equipped_item.game_image.rect.left >= 600:
 							current_side = self.right_shore_characters
-						elif self.player.equipped_item.game_image.rect.right <= 279:
+						elif self.player.equipped_item.game_image.rect.right <= 300:
 							current_side = self.left_shore_characters
 
 						current_side.append(self.player.equipped_item)
