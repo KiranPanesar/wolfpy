@@ -1,8 +1,15 @@
 wolfpy
 ======
 
-A wolf, a sheep and a cabbage walk into a bar...
+A simple game written in Python, built using Pygame and Tkinter.
 
--
+fblib
+-----
+We also built a basic Facebook API wrapper in Python to allow users to share their score
+Instructions
+-----
+Run the game.py file to play.
 
-Run the game.py file to play the game.
+Attribution
+-----
+Built by [Kiran Panesar](https://github.com/KiranPanesar) and [Daniel Koehler](https://github.com/DanielKoehler) at Cardiff University.
